@@ -38,6 +38,7 @@ function SearchIcon() {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
+      focusable="false"
     >
       <circle
         cx="10.8"
@@ -46,6 +47,7 @@ function SearchIcon() {
         stroke="currentColor"
         strokeWidth="1.6"
       />
+
       <path
         d="m16 16 4.5 4.5"
         stroke="currentColor"
@@ -74,16 +76,26 @@ function BrandSearch({
 
   const [query, setQuery] = useState("");
   const [resultsOpen, setResultsOpen] = useState(false);
+  const [previousEnabled, setPreviousEnabled] = useState(enabled);
+
+  // Reset only when the search changes from enabled to disabled.
+  if (previousEnabled !== enabled) {
+    setPreviousEnabled(enabled);
+
+    if (!enabled) {
+      setQuery("");
+      setResultsOpen(false);
+    }
+  }
 
   const filteredBrands = brands.filter((brand) =>
     brand.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
 
+  const showResults = enabled && resultsOpen;
+
   useEffect(() => {
     if (!enabled) {
-      setResultsOpen(false);
-      setQuery("");
-
       if (document.activeElement === inputRef.current) {
         inputRef.current?.blur();
       }
@@ -117,8 +129,6 @@ function BrandSearch({
     };
   }, []);
 
-  const showResults = enabled && resultsOpen;
-
   return (
     <div
       ref={rootRef}
@@ -137,9 +147,9 @@ function BrandSearch({
           id={`${id}-input`}
           type="search"
           value={query}
+          disabled={!enabled}
           placeholder="Discover your watch brand"
           aria-label="Search watch brands"
-          aria-expanded={showResults}
           aria-controls={showResults ? `${id}-results` : undefined}
           autoComplete="off"
           spellCheck={false}
@@ -160,6 +170,7 @@ function BrandSearch({
         <div
           id={`${id}-results`}
           className="wbw-search-results"
+          role="region"
           aria-label="Matching watch brands"
         >
           {filteredBrands.length > 0 ? (
@@ -178,7 +189,7 @@ function BrandSearch({
               </Link>
             ))
           ) : (
-            <p>No matching brands found.</p>
+            <p role="status">No matching brands found.</p>
           )}
         </div>
       )}
@@ -196,6 +207,21 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const [previousContext, setPreviousContext] = useState({
+    pathname,
+    scrolled,
+  });
+
+  // Close panels when the route or navbar mode changes.
+  if (
+    previousContext.pathname !== pathname ||
+    previousContext.scrolled !== scrolled
+  ) {
+    setPreviousContext({ pathname, scrolled });
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }
 
   function closeMenus() {
     setMenuOpen(false);
@@ -246,7 +272,7 @@ export default function Navbar() {
     function updateScroll() {
       const position = Math.max(0, window.scrollY);
 
-      // Different thresholds prevent flickering near the boundary.
+      // Separate thresholds prevent flickering.
       setScrolled((previous) =>
         previous ? position > 40 : position > 80,
       );
@@ -260,9 +286,12 @@ export default function Navbar() {
       }
     }
 
-    updateScroll();
+    // Read the initial scroll position in the animation callback.
+    handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -272,11 +301,6 @@ export default function Navbar() {
       }
     };
   }, []);
-
-  useEffect(() => {
-    setMenuOpen(false);
-    setSearchOpen(false);
-  }, [pathname, scrolled]);
 
   useEffect(() => {
     function handleOutsideClick(event: PointerEvent) {
@@ -290,7 +314,9 @@ export default function Navbar() {
     }
 
     function handleEscape(event: KeyboardEvent) {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape") {
+        return;
+      }
 
       if (searchOpen) {
         setSearchOpen(false);
@@ -326,6 +352,8 @@ export default function Navbar() {
     };
   }, []);
 
+  const compactSearchOpen = scrolled && searchOpen;
+
   return (
     <div className="wbw-header-space">
       <header
@@ -335,13 +363,19 @@ export default function Navbar() {
           scrolled ? "wbw-is-scrolled" : ""
         }`}
       >
-        {/* Always visible */}
+        {/* Top black bar: always visible */}
         <div className="wbw-announcement">
-          <span className="wbw-announcement-line" aria-hidden="true" />
+          <span
+            className="wbw-announcement-line"
+            aria-hidden="true"
+          />
 
           <p>Exceptional timepieces. Personal connections.</p>
 
-          <span className="wbw-announcement-line" aria-hidden="true" />
+          <span
+            className="wbw-announcement-line"
+            aria-hidden="true"
+          />
         </div>
 
         {/* Purple main bar */}
@@ -363,7 +397,9 @@ export default function Navbar() {
               />
 
               <span className="wbw-brand-copy">
-                <span className="wbw-brand-name">We Buy Watches</span>
+                <span className="wbw-brand-name">
+                  We Buy Watches
+                </span>
 
                 <span className="wbw-brand-subtitle">
                   Luxury Watch Referrals
@@ -372,7 +408,7 @@ export default function Navbar() {
             </Link>
 
             <div className="wbw-center">
-              {/* Keep both layers mounted for smooth transitions */}
+              {/* Mounted layers preserve the CSS transitions */}
               <div
                 className="wbw-expanded-search"
                 aria-hidden={scrolled}
@@ -401,9 +437,11 @@ export default function Navbar() {
                 type="button"
                 className="wbw-search-toggle"
                 aria-label={
-                  searchOpen ? "Close brand search" : "Open brand search"
+                  compactSearchOpen
+                    ? "Close brand search"
+                    : "Open brand search"
                 }
-                aria-expanded={searchOpen}
+                aria-expanded={compactSearchOpen}
                 aria-controls="wbw-compact-search"
                 aria-hidden={!scrolled}
                 inert={!scrolled}
@@ -439,15 +477,15 @@ export default function Navbar() {
                   setSearchOpen(false);
                 }}
               >
-                <span />
-                <span />
-                <span />
+                <span aria-hidden="true" />
+                <span aria-hidden="true" />
+                <span aria-hidden="true" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Collapses smoothly instead of being unmounted */}
+        {/* Bottom black bar: collapses when scrolling */}
         <div
           className="wbw-bottom-wrap"
           aria-hidden={scrolled}
@@ -465,14 +503,14 @@ export default function Navbar() {
         <div
           id="wbw-compact-search"
           className={`wbw-compact-search ${
-            scrolled && searchOpen ? "wbw-panel-open" : ""
+            compactSearchOpen ? "wbw-panel-open" : ""
           }`}
-          aria-hidden={!scrolled || !searchOpen}
-          inert={!scrolled || !searchOpen}
+          aria-hidden={!compactSearchOpen}
+          inert={!compactSearchOpen}
         >
           <BrandSearch
             id="wbw-compact"
-            enabled={scrolled && searchOpen}
+            enabled={compactSearchOpen}
             focusOnOpen
             onSelect={closeMenus}
           />
@@ -487,7 +525,10 @@ export default function Navbar() {
           aria-hidden={!menuOpen}
           inert={!menuOpen}
         >
-          <nav className="wbw-mobile-nav" aria-label="Mobile navigation">
+          <nav
+            className="wbw-mobile-nav"
+            aria-label="Mobile navigation"
+          >
             <div className="wbw-mobile-links">
               {renderLinks(true)}
 

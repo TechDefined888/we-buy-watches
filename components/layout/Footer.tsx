@@ -24,7 +24,7 @@ export default function Footer() {
         fontFamily: "var(--font-nav), Arial, sans-serif",
       }}
     >
-      {/* PURPLE CALL TO ACTION */}
+      {/* Purple call to action */}
       <div
         style={{
           backgroundColor: "#261035",
@@ -84,10 +84,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* MAIN FOOTER */}
+      {/* Main footer */}
       <div className="mx-auto max-w-[1600px] px-6 sm:px-8 lg:px-12">
         <div className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-16">
-          {/* BRAND */}
+          {/* Brand */}
           <div>
             <Link
               href="/"
@@ -147,7 +147,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* NAVIGATION */}
+          {/* Navigation */}
           <nav aria-label="Footer navigation">
             <h3
               className="mb-6 text-[11px] uppercase tracking-[0.2em]"
@@ -174,7 +174,7 @@ export default function Footer() {
             </ul>
           </nav>
 
-          {/* BRANDS */}
+          {/* Brands */}
           <nav aria-label="Featured watch brands">
             <h3
               className="mb-6 text-[11px] uppercase tracking-[0.2em]"
@@ -210,7 +210,7 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* REFERRAL INFORMATION */}
+        {/* Referral information */}
         <div
           className="py-6"
           style={{
@@ -227,7 +227,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* COPYRIGHT */}
+        {/* Copyright */}
         <div
           className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between"
           style={{
@@ -238,8 +238,7 @@ export default function Footer() {
             className="m-0 text-[11px] leading-6"
             style={{ color: "#AAA1B1" }}
           >
-            © {new Date().getFullYear()} We Buy Watches. All rights
-            reserved.
+            © 2026 We Buy Watches. All rights reserved.
           </p>
 
           <p
