@@ -1,6 +1,6 @@
 export const breguetContent = {
   introduction:
-    "Considering selling your Breguet in Melbourne? Share your watch's details, present condition and available service records for review and potential referral to our participating dealer.",
+    "Considering selling your Breguet in Australia? Share your watch's details, present condition and available service records for review and potential referral to our participating dealer.",
 
   overview:
     "A useful Breguet selling enquiry describes both the watch and its known history. Include the model or reference from available documents, together with photographs of the dial, case and clasp. For an older watch, explain any restoration or replacement components you know about. If you cannot verify a date, material or specification, leave it open for clarification rather than making assumptions.",
@@ -31,7 +31,7 @@ export const breguetContent = {
   faqs: [
     {
       question:
-        "How can I enquire about selling a Breguet in Melbourne?",
+        "How can I enquire about selling a Breguet in Australia?",
       answer:
         "Use the watch enquiry form to share your Breguet details, photographs and contact information. With your consent, suitable enquiries may be referred to our participating dealer for further assessment.",
     },

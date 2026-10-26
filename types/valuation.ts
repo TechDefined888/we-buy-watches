@@ -21,6 +21,9 @@ export type WatchInformation = {
   year: string;
   condition: WatchCondition;
   includedItems: IncludedItems;
+  serviceHistory?: string;
+  knownFaults?: string;
+  expectedPrice?: string;
   additionalDetails: string;
 };
 
@@ -30,4 +33,16 @@ export type SellerDetails = {
   phone: string;
   suburb: string;
   postcode: string;
+  stateOrTerritory?:
+    | ""
+    | "ACT"
+    | "NSW"
+    | "NT"
+    | "QLD"
+    | "SA"
+    | "TAS"
+    | "VIC"
+    | "WA";
+  preferredContactMethod?: "" | "email" | "phone";
+  additionalNotes?: string;
 };

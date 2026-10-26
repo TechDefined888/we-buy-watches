@@ -1,6 +1,6 @@
 export const cartierContent = {
   introduction:
-    "Considering selling your Cartier watch in Melbourne? Share the model, condition and photographs for review and potential referral to our participating dealer. The dealer handles any assessment, offer and purchase.",
+    "Considering selling your Cartier watch in Australia? Share the model, condition and photographs for review and potential referral to our participating dealer. The dealer handles any assessment, offer and purchase.",
 
   overview:
     "Start your Cartier watch enquiry by describing the exact timepiece rather than relying on its appearance alone. Include the model or reference if known, case dimensions from available records and whether it is fitted with a strap or bracelet. State the movement type only if you can verify it. Clear details about operation, wear and accompanying items help the participating dealer decide whether to assess the watch further.",
@@ -31,7 +31,7 @@ export const cartierContent = {
   faqs: [
     {
       question:
-        "How can I enquire about selling a Cartier watch in Melbourne?",
+        "How can I enquire about selling a Cartier watch in Australia?",
       answer:
         "Complete the watch enquiry form with the model information you know, photographs and contact details. Suitable enquiries may be referred to our participating dealer with your consent.",
     },

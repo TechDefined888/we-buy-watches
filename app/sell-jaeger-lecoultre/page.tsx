@@ -4,9 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { jaegerLecoultreContent } from "@/data/jaeger-lecoultre";
 
 export const metadata: Metadata = {
-  title: "Sell Your Jaeger-LeCoultre in Melbourne",
+  title: "Sell Your Jaeger-LeCoultre in Australia",
   description:
-    "Considering selling your Jaeger-LeCoultre in Melbourne? Share watch details, condition and photos for review and potential referral to a participating dealer.",
+    "Considering selling your Jaeger-LeCoultre in Australia? Share watch details, condition and photos for review and potential referral to a participating dealer.",
 };
 
 export default function SellJaegerLecoultrePage() {

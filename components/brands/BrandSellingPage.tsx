@@ -91,7 +91,7 @@ export default function BrandSellingPage({
             >
               Sell Your {brand}
               <span className="mt-2 block text-[#E1C17E]">
-                in Melbourne
+                in Australia
               </span>
             </h1>
 
@@ -102,6 +102,13 @@ export default function BrandSellingPage({
 
             <p className="mt-6 text-sm leading-7 text-[#F7F0E3]/85 sm:text-[15px]">
               {introduction}
+            </p>
+
+            <p className="mt-4 text-xs leading-6 text-[#F7F0E3]/80">
+              Enquiries are welcome from across Australia, subject
+              to the participating dealer&apos;s ability to handle
+              the transaction. Confirm any inspection, delivery
+              and purchase arrangements directly with the dealer.
             </p>
 
             <Link

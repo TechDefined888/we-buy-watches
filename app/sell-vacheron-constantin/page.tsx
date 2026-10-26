@@ -4,9 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { vacheronConstantinContent } from "@/data/vacheron-constantin";
 
 export const metadata: Metadata = {
-  title: "Sell Your Vacheron Constantin in Melbourne",
+  title: "Sell Your Vacheron Constantin in Australia",
   description:
-    "Considering selling your Vacheron Constantin in Melbourne? Share watch details, photos and service information for review and potential dealer referral.",
+    "Considering selling your Vacheron Constantin in Australia? Share watch details, photos and service information for review and potential dealer referral.",
 };
 
 export default function SellVacheronConstantinPage() {

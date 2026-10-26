@@ -1,6 +1,6 @@
 export const audemarsPiguetContent = {
   introduction:
-    "Looking to sell your Audemars Piguet in Melbourne? Describe your watch, its condition and included accessories for review and potential referral to our participating dealer. Any assessment, offer or purchase is handled directly by the dealer.",
+    "Looking to sell your Audemars Piguet in Australia? Describe your watch, its condition and included accessories for review and potential referral to our participating dealer. Any assessment, offer or purchase is handled directly by the dealer.",
 
   overview:
     "An Audemars Piguet selling enquiry should describe the complete watch, including its case, bracelet or strap, clasp and any spare links. Share the reference number if known, together with available service records. Mention previous polishing, repairs or replacement parts where you have that information. Clear photographs help the participating dealer decide what additional details or inspection may be needed.",
@@ -31,7 +31,7 @@ export const audemarsPiguetContent = {
   faqs: [
     {
       question:
-        "How do I start selling my Audemars Piguet in Melbourne?",
+        "How do I start selling my Audemars Piguet in Australia?",
       answer:
         "Complete the watch enquiry form with your model or reference details, condition, photographs and contact information. We review suitable enquiries for potential referral to our participating dealer with your consent.",
     },

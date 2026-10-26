@@ -1,6 +1,6 @@
 export const vacheronConstantinContent = {
   introduction:
-    "Looking to sell your Vacheron Constantin in Melbourne? Prepare your watch details, photographs and available service information for review and potential referral to our participating dealer.",
+    "Looking to sell your Vacheron Constantin in Australia? Prepare your watch details, photographs and available service information for review and potential referral to our participating dealer.",
 
   overview:
     "Whether your Vacheron Constantin has been worn regularly or kept for special occasions, describe its present condition and the information you can verify. Include the reference, approximate year if known, and details of the strap, bracelet and clasp. For an older or inherited watch, explain any gaps in its history. The participating dealer may request additional information before deciding whether to assess it or make an offer.",
@@ -31,7 +31,7 @@ export const vacheronConstantinContent = {
   faqs: [
     {
       question:
-        "How do I start selling a Vacheron Constantin in Melbourne?",
+        "How do I start selling a Vacheron Constantin in Australia?",
       answer:
         "Complete the watch enquiry form with your watch details, photographs and contact information. Suitable enquiries may be referred to our participating dealer with your consent. Assessments, offers and purchases are handled directly by the dealer.",
     },

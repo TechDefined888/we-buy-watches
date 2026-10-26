@@ -1,6 +1,6 @@
 export const jaegerLecoultreContent = {
   introduction:
-    "Looking to sell your Jaeger-LeCoultre in Melbourne? Share your watch details, condition and available records for review and potential referral to our participating dealer.",
+    "Looking to sell your Jaeger-LeCoultre in Australia? Share your watch details, condition and available records for review and potential referral to our participating dealer.",
 
   overview:
     "Prepare your Jaeger-LeCoultre selling enquiry by identifying the model or reference where possible and describing the watch as it is today. Explain whether it has been worn recently, which functions are operating as expected and what documents or accessories accompany it. Clear photographs of the dial, case and clasp help the participating dealer decide what further information may be needed before considering an offer.",
@@ -31,7 +31,7 @@ export const jaegerLecoultreContent = {
   faqs: [
     {
       question:
-        "How do I start selling a Jaeger-LeCoultre in Melbourne?",
+        "How do I start selling a Jaeger-LeCoultre in Australia?",
       answer:
         "Complete the watch enquiry form with your model details, condition, photographs and contact information. Suitable enquiries may be referred to our participating dealer with your consent.",
     },

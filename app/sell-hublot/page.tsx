@@ -4,9 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { hublotContent } from "@/data/hublot";
 
 export const metadata: Metadata = {
-  title: "Sell Your Hublot in Melbourne",
+  title: "Sell Your Hublot in Australia",
   description:
-    "Looking to sell your Hublot in Melbourne? Share its reference, condition, photographs and available records for review and potential dealer referral.",
+    "Looking to sell your Hublot in Australia? Share its reference, condition, photographs and available records for review and potential dealer referral.",
 };
 
 export default function SellHublotPage() {

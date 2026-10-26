@@ -1,6 +1,6 @@
 export const rolexContent = {
   introduction:
-    "Looking to sell your Rolex in Melbourne? Share your watch details and photographs for review and potential referral to our participating dealer. The dealer handles any assessment, offer and purchase.",
+    "Looking to sell your Rolex in Australia? Share your watch details and photographs for review and potential referral to our participating dealer. The dealer handles any assessment, offer and purchase.",
 
   overview:
     "Preparing to sell your Rolex starts with describing the watch accurately. Gather the model name, reference number and any available service records. Explain its current condition, what accompanies it and any repairs or modifications you know about. Our referral process gives you a starting point for discussing a potential sale with the participating dealer, without an obligation to accept an offer.",
@@ -30,7 +30,7 @@ export const rolexContent = {
 
   faqs: [
     {
-      question: "How do I start selling my Rolex in Melbourne?",
+      question: "How do I start selling my Rolex in Australia?",
       answer:
         "Use the watch enquiry form to provide your Rolex details, photographs and contact information. With your consent, suitable enquiries may be referred to our participating dealer for further assessment.",
     },

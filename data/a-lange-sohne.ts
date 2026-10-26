@@ -1,6 +1,6 @@
 export const aLangeSohneContent = {
   introduction:
-    "Considering selling your A. Lange & Söhne in Melbourne? Share your watch's reference, condition and accompanying records for review and potential referral to our participating dealer.",
+    "Considering selling your A. Lange & Söhne in Australia? Share your watch's reference, condition and accompanying records for review and potential referral to our participating dealer.",
 
   overview:
     "Prepare your A. Lange & Söhne selling enquiry by gathering the reference number and describing the watch's current condition. Include any available information about its functions, service history and accompanying accessories. If the watch has been stored or has not been operated recently, explain that rather than assuming everything works. The participating dealer independently decides whether further assessment or an inspection is appropriate.",
@@ -31,7 +31,7 @@ export const aLangeSohneContent = {
   faqs: [
     {
       question:
-        "How can I enquire about selling an A. Lange & Söhne in Melbourne?",
+        "How can I enquire about selling an A. Lange & Söhne in Australia?",
       answer:
         "Complete the watch enquiry form with the details you know, photographs and contact information. With your consent, suitable enquiries may be referred to our participating dealer for independent assessment.",
     },

@@ -48,7 +48,6 @@ export default function Hero() {
 
     video.volume = nextVolume;
     video.muted = nextVolume === 0;
-
     setSoundOn(nextVolume > 0);
   };
 
@@ -158,6 +157,10 @@ export default function Hero() {
             collector timepieces, tell us about your watch and
             connect with our participating Australian luxury watch
             buyer to explore a potential offer.
+          </p>
+
+          <p className="mt-4 max-w-[480px] text-xs leading-6 text-white/80">
+            For owners of desirable luxury watches across Australia.
           </p>
 
           <div className="mt-9 flex flex-col items-start gap-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">

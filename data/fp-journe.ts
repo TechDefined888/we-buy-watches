@@ -1,6 +1,6 @@
 export const fpJourneContent = {
   introduction:
-    "Looking to sell your F.P. Journe in Melbourne? Share your watch details, photographs and available records for review and potential referral to our participating dealer.",
+    "Looking to sell your F.P. Journe in Australia? Share your watch details, photographs and available records for review and potential referral to our participating dealer.",
 
   overview:
     "Start your F.P. Journe selling enquiry with the model name, reference if available and the information recorded in your documents. Describe the dial, case and fitted strap or bracelet, together with any known service work or changes. If you are unsure about the watch's specification or history, explain that clearly. The participating dealer may request more information or an inspection before deciding whether to make an offer.",
@@ -31,7 +31,7 @@ export const fpJourneContent = {
   faqs: [
     {
       question:
-        "How do I enquire about selling an F.P. Journe in Melbourne?",
+        "How do I enquire about selling an F.P. Journe in Australia?",
       answer:
         "Complete the watch enquiry form with your watch information, clear photographs and contact details. Suitable enquiries may be referred to our participating dealer with your consent.",
     },

@@ -40,7 +40,7 @@ export default function ValuationHero() {
 
         <div className="mx-auto mt-10 max-w-3xl text-center sm:mt-14">
           <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#E1C17E] sm:text-xs">
-            Luxury Watch Enquiries · Melbourne
+            Luxury Watch Enquiries · Australia
           </p>
 
           <h1
@@ -60,7 +60,7 @@ export default function ValuationHero() {
           />
 
           <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#F7F0E3]/80 sm:text-[15px]">
-            Looking to sell a luxury watch in Melbourne? Share your
+            Looking to sell a luxury watch in Australia? Share your
             watch details and photographs. Suitable enquiries are
             reviewed before referral to our participating dealer
             for assessment and a potential offer.

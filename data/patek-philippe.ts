@@ -1,6 +1,6 @@
 export const patekPhilippeContent = {
   introduction:
-    "Considering selling your Patek Philippe in Melbourne? Prepare a detailed enquiry about your watch, its condition and accompanying documents for review and potential referral to our participating dealer.",
+    "Considering selling your Patek Philippe in Australia? Prepare a detailed enquiry about your watch, its condition and accompanying documents for review and potential referral to our participating dealer.",
 
   overview:
     "A useful Patek Philippe selling enquiry starts with identifying the exact watch and what accompanies it. Include the reference, case material and any functions you can identify, along with service records and details of previous repairs. If information is uncertain, explain what you know rather than guessing. The participating dealer may request further information before deciding whether to assess the watch or make an offer.",
@@ -31,7 +31,7 @@ export const patekPhilippeContent = {
   faqs: [
     {
       question:
-        "How do I enquire about selling a Patek Philippe in Melbourne?",
+        "How do I enquire about selling a Patek Philippe in Australia?",
       answer:
         "Complete the watch enquiry form with the reference or model information you know, clear photographs and your contact details. We review suitable enquiries for potential referral to our participating dealer with your consent.",
     },

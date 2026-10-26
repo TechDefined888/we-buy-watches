@@ -15,84 +15,27 @@ const brands = [
   { label: "Richard Mille", href: "/sell-richard-mille" },
 ];
 
+const linkClassName =
+  "inline-block rounded text-sm text-[#514758]! transition-colors hover:text-[#30104B]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]";
+
 export default function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: "#111113",
-        color: "#F7F0E3",
+        backgroundColor: "#FFFFFF",
+        color: "#211A26",
         fontFamily: "var(--font-nav), Arial, sans-serif",
+        borderTop: "1px solid rgba(48, 16, 75, 0.12)",
       }}
     >
-      {/* Purple call to action */}
-      <div
-        style={{
-          backgroundColor: "#261035",
-          borderTop: "1px solid rgba(200, 167, 94, 0.3)",
-          borderBottom: "1px solid rgba(200, 167, 94, 0.3)",
-        }}
-      >
-        <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-6 px-6 py-10 sm:px-8 lg:flex-row lg:items-center lg:px-12">
-          <div>
-            <p
-              className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em]"
-              style={{ color: "#E1C17E" }}
-            >
-              Your next chapter starts here
-            </p>
-
-            <h2
-              className="text-2xl sm:text-3xl"
-              style={{
-                margin: 0,
-                color: "#F7F0E3",
-                fontFamily: "var(--font-nav), Arial, sans-serif",
-                fontWeight: 500,
-                lineHeight: 1.35,
-              }}
-            >
-              Considering selling your timepiece?
-            </h2>
-
-            <p
-              className="mt-3 max-w-xl text-sm leading-7"
-              style={{ color: "#C4B9CD" }}
-            >
-              Share your watch details to begin a referral to a
-              participating dealer.
-            </p>
-          </div>
-
-          <Link
-            href="/sell-luxury-watches"
-            className="group inline-flex min-h-[54px] items-center justify-center gap-5 rounded px-6 py-4 text-center text-[10px] font-semibold uppercase tracking-[0.12em] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
-            style={{
-              backgroundColor: "#E1C17E",
-              color: "#19151C",
-              flexShrink: 0,
-            }}
-          >
-            Request a Private Valuation
-
-            <span
-              aria-hidden="true"
-              className="text-xl transition-transform group-hover:translate-x-1"
-            >
-              →
-            </span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Main footer */}
       <div className="mx-auto max-w-[1600px] px-6 sm:px-8 lg:px-12">
         <div className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-16">
           {/* Brand */}
-          <div>
+          <div className="min-w-0">
             <Link
               href="/"
               aria-label="We Buy Watches home"
-              className="inline-flex items-center gap-4 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
+              className="inline-flex max-w-full items-center gap-3 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B] sm:gap-4"
             >
               <Image
                 src="/logo/we-buy-watches-logo.png"
@@ -108,21 +51,21 @@ export default function Footer() {
               />
 
               <span
-                className="flex flex-col gap-2 pl-4"
+                className="flex min-w-0 flex-col gap-2 pl-3 sm:pl-4"
                 style={{
                   borderLeft: "1px solid rgba(200, 167, 94, 0.5)",
                 }}
               >
                 <span
                   className="text-sm font-semibold uppercase tracking-[0.1em] sm:text-base"
-                  style={{ color: "#E1C17E" }}
+                  style={{ color: "#30104B" }}
                 >
                   We Buy Watches
                 </span>
 
                 <span
-                  className="text-[8px] uppercase tracking-[0.2em]"
-                  style={{ color: "#C4B9CD" }}
+                  className="text-[8px] uppercase leading-5 tracking-[0.2em]"
+                  style={{ color: "#514758" }}
                 >
                   Luxury Watch Referrals
                 </span>
@@ -131,7 +74,7 @@ export default function Footer() {
 
             <p
               className="mt-6 max-w-sm text-sm leading-7"
-              style={{ color: "#AAA1B1" }}
+              style={{ color: "#514758" }}
             >
               Connecting owners of exceptional timepieces with
               participating dealers.
@@ -139,7 +82,7 @@ export default function Footer() {
 
             <p
               className="mt-5 text-[10px] uppercase leading-6 tracking-[0.18em]"
-              style={{ color: "#C8A75E" }}
+              style={{ color: "#795C27" }}
             >
               Exceptional timepieces.
               <br />
@@ -152,7 +95,7 @@ export default function Footer() {
             <h3
               className="mb-6 text-[11px] uppercase tracking-[0.2em]"
               style={{
-                color: "#E1C17E",
+                color: "#30104B",
                 fontFamily: "inherit",
                 fontWeight: 600,
               }}
@@ -165,7 +108,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="inline-block rounded text-sm !text-[#C4B9CD] transition-colors hover:!text-[#E1C17E] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
+                    className={linkClassName}
                   >
                     {item.label}
                   </Link>
@@ -179,7 +122,7 @@ export default function Footer() {
             <h3
               className="mb-6 text-[11px] uppercase tracking-[0.2em]"
               style={{
-                color: "#E1C17E",
+                color: "#30104B",
                 fontFamily: "inherit",
                 fontWeight: 600,
               }}
@@ -192,7 +135,7 @@ export default function Footer() {
                 <li key={brand.href}>
                   <Link
                     href={brand.href}
-                    className="inline-block rounded text-sm !text-[#C4B9CD] transition-colors hover:!text-[#E1C17E] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
+                    className={linkClassName}
                   >
                     {brand.label}
                   </Link>
@@ -202,7 +145,7 @@ export default function Footer() {
 
             <Link
               href="/brands"
-              className="mt-6 inline-flex items-center gap-3 rounded text-[10px] font-medium uppercase tracking-[0.15em] !text-[#E1C17E] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
+              className="mt-6 inline-flex items-center gap-3 rounded text-[10px] font-semibold uppercase tracking-[0.15em] text-[#30104B]! transition-colors hover:text-[#795C27]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]"
             >
               Explore All Brands
               <span aria-hidden="true">→</span>
@@ -214,12 +157,12 @@ export default function Footer() {
         <div
           className="py-6"
           style={{
-            borderTop: "1px solid rgba(200, 167, 94, 0.18)",
+            borderTop: "1px solid rgba(48, 16, 75, 0.12)",
           }}
         >
           <p
             className="m-0 max-w-4xl text-xs leading-6"
-            style={{ color: "#AAA1B1" }}
+            style={{ color: "#514758" }}
           >
             We Buy Watches operates as a referral platform. Watch
             assessments, offers and purchases are handled by the
@@ -231,19 +174,19 @@ export default function Footer() {
         <div
           className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between"
           style={{
-            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+            borderTop: "1px solid rgba(48, 16, 75, 0.1)",
           }}
         >
           <p
             className="m-0 text-[11px] leading-6"
-            style={{ color: "#AAA1B1" }}
+            style={{ color: "#514758" }}
           >
             © 2026 We Buy Watches. All rights reserved.
           </p>
 
           <p
-            className="m-0 text-[10px] uppercase tracking-[0.15em]"
-            style={{ color: "#C4B9CD" }}
+            className="m-0 text-[10px] uppercase leading-6 tracking-[0.15em]"
+            style={{ color: "#514758" }}
           >
             Luxury Watch Referrals · Australia
           </p>

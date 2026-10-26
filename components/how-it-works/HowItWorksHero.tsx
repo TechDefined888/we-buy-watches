@@ -57,7 +57,7 @@ export default function HowItWorksHero() {
           />
 
           <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#F7F0E3]/80 sm:text-[15px]">
-            Considering selling a luxury watch in Melbourne?
+            Considering selling a luxury watch in Australia?
             Understand how your enquiry is reviewed and how our
             participating dealer may help you explore a potential
             sale.

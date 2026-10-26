@@ -1,6 +1,6 @@
 export const hublotContent = {
   introduction:
-    "Considering selling your Hublot in Melbourne? Share the reference, condition and photographs of your watch for review and potential referral to our participating dealer. The dealer independently handles assessments, offers and purchases.",
+    "Considering selling your Hublot in Australia? Share the reference, condition and photographs of your watch for review and potential referral to our participating dealer. The dealer independently handles assessments, offers and purchases.",
 
   overview:
     "Prepare your Hublot selling enquiry by identifying the reference and describing the watch's current configuration. Include the case material if known, the fitted strap or bracelet and any accompanying accessories. Explain known component changes, visible damage and service history. If you believe the watch is a particular edition, state which available records support that description. The participating dealer may need additional information or an inspection before considering an offer.",
@@ -31,7 +31,7 @@ export const hublotContent = {
   faqs: [
     {
       question:
-        "How can I enquire about selling a Hublot in Melbourne?",
+        "How can I enquire about selling a Hublot in Australia?",
       answer:
         "Complete the watch enquiry form with your reference or model information, condition, photographs and contact details. With your consent, suitable enquiries may be referred to our participating dealer.",
     },

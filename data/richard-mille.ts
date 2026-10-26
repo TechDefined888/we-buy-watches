@@ -1,6 +1,6 @@
 export const richardMilleContent = {
   introduction:
-    "Considering selling your Richard Mille in Melbourne? Share the reference, condition and available documentation for review and potential referral to our participating dealer. The dealer independently handles assessments, offers and purchases.",
+    "Considering selling your Richard Mille in Australia? Share the reference, condition and available documentation for review and potential referral to our participating dealer. The dealer independently handles assessments, offers and purchases.",
 
   overview:
     "Start your Richard Mille selling enquiry with the exact reference if known, together with details of the case, strap and clasp. Describe the watch's current operation and any known repairs or component changes. If you believe it is a particular edition, explain which documents support that description rather than relying on appearance alone. The participating dealer may need further information or an inspection before considering an offer.",
@@ -31,7 +31,7 @@ export const richardMilleContent = {
   faqs: [
     {
       question:
-        "How can I enquire about selling a Richard Mille in Melbourne?",
+        "How can I enquire about selling a Richard Mille in Australia?",
       answer:
         "Use the watch enquiry form to share the reference, condition, photographs and your contact details. With your consent, suitable enquiries may be referred to our participating dealer for further assessment.",
     },

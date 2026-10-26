@@ -4,9 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { richardMilleContent } from "@/data/richard-mille";
 
 export const metadata: Metadata = {
-  title: "Sell Your Richard Mille in Melbourne",
+  title: "Sell Your Richard Mille in Australia",
   description:
-    "Explore selling your Richard Mille in Melbourne. Share the reference, condition, photos and document details for review and potential dealer referral.",
+    "Explore selling your Richard Mille in Australia. Share the reference, condition, photos and document details for review and potential dealer referral.",
 };
 
 export default function SellRichardMillePage() {

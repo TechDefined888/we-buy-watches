@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import type {
   SellerDetails,
   WatchInformation,
@@ -14,6 +16,8 @@ type ConsentStepProps = {
   onEdit: (step: "watch" | "photos" | "seller") => void;
 };
 
+type ReviewDetail = [label: string, value: string | undefined];
+
 const conditionLabels: Record<string, string> = {
   unworn: "Unworn",
   excellent: "Excellent",
@@ -23,15 +27,34 @@ const conditionLabels: Record<string, string> = {
 };
 
 const includedItemsLabels: Record<string, string> = {
-  "box-and-papers": "Box and papers",
-  "box-only": "Box only",
-  "papers-only": "Papers only",
+  "box-and-papers": "Original box and papers",
+  "box-only": "Original box only",
+  "papers-only": "Original papers only",
   neither: "Neither",
   unsure: "Not sure",
 };
 
+const stateLabels: Record<string, string> = {
+  ACT: "Australian Capital Territory",
+  NSW: "New South Wales",
+  NT: "Northern Territory",
+  QLD: "Queensland",
+  SA: "South Australia",
+  TAS: "Tasmania",
+  VIC: "Victoria",
+  WA: "Western Australia",
+};
+
+const contactMethodLabels: Record<string, string> = {
+  email: "Email",
+  phone: "Phone",
+};
+
 const editButtonClassName =
   "min-h-11 rounded px-3 text-xs font-semibold text-[#30104B] underline underline-offset-4 hover:bg-[#F7F0E3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#30104B]";
+
+const policyLinkClassName =
+  "rounded font-medium text-[#30104B]! underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]";
 
 export default function ConsentStep({
   watch,
@@ -41,22 +64,42 @@ export default function ConsentStep({
   onConsentChange,
   onEdit,
 }: ConsentStepProps) {
-  const watchDetails = [
+  const watchDetails: ReviewDetail[] = [
     ["Brand", watch.brand],
     ["Model", watch.model],
     ["Reference number", watch.referenceNumber],
-    ["Year", watch.year],
+    ["Approximate year", watch.year],
     ["Condition", conditionLabels[watch.condition]],
-    ["Box and papers", includedItemsLabels[watch.includedItems]],
+    [
+      "Original box and papers",
+      includedItemsLabels[watch.includedItems],
+    ],
+    ["Service history", watch.serviceHistory],
+    ["Known damage or faults", watch.knownFaults],
+    [
+      "Expected selling price",
+      watch.expectedPrice?.trim()
+        ? `AUD ${watch.expectedPrice.trim()}`
+        : "",
+    ],
     ["Additional details", watch.additionalDetails],
   ];
 
-  const sellerDetails = [
+  const sellerDetails: ReviewDetail[] = [
     ["Full name", seller.fullName],
     ["Email address", seller.email],
     ["Phone number", seller.phone],
+    [
+      "State or territory",
+      stateLabels[seller.stateOrTerritory ?? ""],
+    ],
     ["Suburb or town", seller.suburb],
     ["Postcode", seller.postcode],
+    [
+      "Preferred contact method",
+      contactMethodLabels[seller.preferredContactMethod ?? ""],
+    ],
+    ["Additional notes", seller.additionalNotes],
   ];
 
   return (
@@ -71,6 +114,7 @@ export default function ConsentStep({
       </p>
 
       <div className="mt-7 space-y-5">
+        {/* Watch details */}
         <section
           aria-labelledby="review-watch-heading"
           className="rounded-xl border border-[#30104B]/15 p-5"
@@ -101,6 +145,7 @@ export default function ConsentStep({
                 className="grid gap-1 text-sm sm:grid-cols-[160px_1fr] sm:gap-4"
               >
                 <dt className="text-[#211A26]/70">{label}</dt>
+
                 <dd className="min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
                   {value?.trim() || "Not provided"}
                 </dd>
@@ -109,6 +154,7 @@ export default function ConsentStep({
           </dl>
         </section>
 
+        {/* Photographs */}
         <section
           aria-labelledby="review-photos-heading"
           className="rounded-xl border border-[#30104B]/15 p-5"
@@ -150,6 +196,7 @@ export default function ConsentStep({
           )}
         </section>
 
+        {/* Contact details */}
         <section
           aria-labelledby="review-contact-heading"
           className="rounded-xl border border-[#30104B]/15 p-5"
@@ -180,8 +227,9 @@ export default function ConsentStep({
                 className="grid gap-1 text-sm sm:grid-cols-[160px_1fr] sm:gap-4"
               >
                 <dt className="text-[#211A26]/70">{label}</dt>
-                <dd className="min-w-0 break-words text-[#211A26]">
-                  {value.trim() || "Not provided"}
+
+                <dd className="min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
+                  {value?.trim() || "Not provided"}
                 </dd>
               </div>
             ))}
@@ -189,6 +237,7 @@ export default function ConsentStep({
         </section>
       </div>
 
+      {/* Referral consent */}
       <div className="mt-6 rounded-xl bg-[#F7F0E3] p-5">
         <p className="text-sm leading-7 text-[#211A26]/80">
           We Buy Watches operates as a referral platform.
@@ -220,6 +269,21 @@ export default function ConsentStep({
             assess my watch and contact me about a potential offer.
           </span>
         </label>
+
+        <p className="mt-4 text-xs leading-6 text-[#211A26]/80">
+          Please read our{" "}
+          <Link
+            href="/privacy-policy"
+            className={policyLinkClassName}
+          >
+            Privacy Policy
+          </Link>{" "}
+          and{" "}
+          <Link href="/terms" className={policyLinkClassName}>
+            Terms of Use
+          </Link>
+          .
+        </p>
       </div>
     </fieldset>
   );

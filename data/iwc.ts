@@ -1,6 +1,6 @@
 export const iwcContent = {
   introduction:
-    "Looking to sell your IWC watch in Melbourne? Share its reference, condition and service history for review and potential referral to our participating dealer. Any assessment, offer or purchase is handled directly by the dealer.",
+    "Looking to sell your IWC watch in Australia? Share its reference, condition and service history for review and potential referral to our participating dealer. Any assessment, offer or purchase is handled directly by the dealer.",
 
   overview:
     "An IWC selling enquiry is most useful when it identifies the exact watch and explains its current condition. Include the model or collection name and reference from available records, along with details of the fitted strap or bracelet. Describe any known issues with timekeeping, displays or other functions. If the watch has been stored, repaired or modified, explain what you know so the participating dealer can decide what further assessment may be needed.",
@@ -31,7 +31,7 @@ export const iwcContent = {
   faqs: [
     {
       question:
-        "How do I enquire about selling an IWC watch in Melbourne?",
+        "How do I enquire about selling an IWC watch in Australia?",
       answer:
         "Complete the watch enquiry form with the model information you know, condition, photographs and contact details. Suitable enquiries may be referred to our participating dealer with your consent.",
     },

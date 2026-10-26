@@ -4,9 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { cartierContent } from "@/data/cartier";
 
 export const metadata: Metadata = {
-  title: "Sell Your Cartier Watch in Melbourne",
+  title: "Sell Your Cartier Watch in Australia",
   description:
-    "Looking to sell your Cartier watch in Melbourne? Share its model, condition and photographs for review and potential referral to a participating dealer.",
+    "Looking to sell your Cartier watch in Australia? Share its model, condition and photographs for review and potential referral to a participating dealer.",
 };
 
 export default function SellCartierPage() {

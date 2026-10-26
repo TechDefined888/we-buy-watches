@@ -2,11 +2,25 @@
 
 import type { SellerDetails } from "@/types/valuation";
 
+const states = [
+  { value: "ACT", label: "Australian Capital Territory" },
+  { value: "NSW", label: "New South Wales" },
+  { value: "NT", label: "Northern Territory" },
+  { value: "QLD", label: "Queensland" },
+  { value: "SA", label: "South Australia" },
+  { value: "TAS", label: "Tasmania" },
+  { value: "VIC", label: "Victoria" },
+  { value: "WA", label: "Western Australia" },
+];
+
 const fieldClassName =
   "mt-2 block min-h-12 w-full rounded-lg border border-[#30104B]/20 bg-white px-4 py-3 text-sm text-[#211A26] transition-colors placeholder:text-[#756C7A] hover:border-[#30104B]/40 focus-visible:border-[#30104B] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#30104B]";
 
 const labelClassName =
   "block text-sm font-medium text-[#211A26]";
+
+const hintClassName =
+  "mt-2 text-xs leading-5 text-[#211A26]/70";
 
 type SellerDetailsStepProps = {
   value: SellerDetails;
@@ -39,6 +53,7 @@ export default function SellerDetailsStep({
       </p>
 
       <div className="mt-7 grid gap-6 sm:grid-cols-2">
+        {/* Full name */}
         <div className="sm:col-span-2">
           <label
             htmlFor="seller-full-name"
@@ -63,6 +78,7 @@ export default function SellerDetailsStep({
           />
         </div>
 
+        {/* Email */}
         <div>
           <label
             htmlFor="seller-email"
@@ -86,6 +102,7 @@ export default function SellerDetailsStep({
           />
         </div>
 
+        {/* Phone */}
         <div>
           <label
             htmlFor="seller-phone"
@@ -110,14 +127,76 @@ export default function SellerDetailsStep({
             className={fieldClassName}
           />
 
-          <p
-            id="seller-phone-hint"
-            className="mt-2 text-xs leading-5 text-[#211A26]/70"
-          >
+          <p id="seller-phone-hint" className={hintClassName}>
             Include your country code if outside Australia.
           </p>
         </div>
 
+        {/* State or territory */}
+        <div>
+          <label
+            htmlFor="seller-state"
+            className={labelClassName}
+          >
+            State or territory <span aria-hidden="true">*</span>
+          </label>
+
+          <select
+            id="seller-state"
+            name="stateOrTerritory"
+            autoComplete="address-level1"
+            required
+            value={value.stateOrTerritory ?? ""}
+            onChange={(event) =>
+              updateField(
+                "stateOrTerritory",
+                event.target.value as SellerDetails["stateOrTerritory"],
+              )
+            }
+            className={fieldClassName}
+          >
+            <option value="">Select your state or territory</option>
+
+            {states.map((state) => (
+              <option key={state.value} value={state.value}>
+                {state.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Postcode */}
+        <div>
+          <label
+            htmlFor="seller-postcode"
+            className={labelClassName}
+          >
+            Australian postcode <span aria-hidden="true">*</span>
+          </label>
+
+          <input
+            id="seller-postcode"
+            name="postcode"
+            type="text"
+            inputMode="numeric"
+            autoComplete="postal-code"
+            required
+            pattern="[0-9]{4}"
+            maxLength={4}
+            value={value.postcode}
+            onChange={(event) =>
+              updateField("postcode", event.target.value)
+            }
+            aria-describedby="seller-postcode-hint"
+            className={fieldClassName}
+          />
+
+          <p id="seller-postcode-hint" className={hintClassName}>
+            Enter your four-digit Australian postcode.
+          </p>
+        </div>
+
+        {/* Suburb */}
         <div>
           <label
             htmlFor="seller-suburb"
@@ -140,35 +219,65 @@ export default function SellerDetailsStep({
           />
         </div>
 
+        {/* Contact preference */}
         <div>
           <label
-            htmlFor="seller-postcode"
+            htmlFor="seller-contact-method"
             className={labelClassName}
           >
-            Australian postcode
+            Preferred contact method{" "}
+            <span aria-hidden="true">*</span>
           </label>
 
-          <input
-            id="seller-postcode"
-            name="postcode"
-            type="text"
-            inputMode="numeric"
-            autoComplete="postal-code"
-            pattern="[0-9]{4}"
-            maxLength={4}
-            value={value.postcode}
+          <select
+            id="seller-contact-method"
+            name="preferredContactMethod"
+            required
+            value={value.preferredContactMethod ?? ""}
             onChange={(event) =>
-              updateField("postcode", event.target.value)
+              updateField(
+                "preferredContactMethod",
+                event.target
+                  .value as SellerDetails["preferredContactMethod"],
+              )
             }
-            aria-describedby="seller-postcode-hint"
             className={fieldClassName}
+          >
+            <option value="">Select a contact method</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+          </select>
+        </div>
+
+        {/* Additional notes */}
+        <div className="sm:col-span-2">
+          <label
+            htmlFor="seller-additional-notes"
+            className={labelClassName}
+          >
+            Additional notes
+          </label>
+
+          <textarea
+            id="seller-additional-notes"
+            name="additionalNotes"
+            rows={3}
+            maxLength={2000}
+            value={value.additionalNotes ?? ""}
+            onChange={(event) =>
+              updateField("additionalNotes", event.target.value)
+            }
+            placeholder="For example, a suitable time to contact you."
+            aria-describedby="seller-additional-notes-hint"
+            className={`${fieldClassName} resize-y`}
           />
 
           <p
-            id="seller-postcode-hint"
-            className="mt-2 text-xs leading-5 text-[#211A26]/70"
+            id="seller-additional-notes-hint"
+            className={hintClassName}
           >
-            Optional. Enter four digits if applicable.
+            Optional. Maximum 2,000 characters. Please do not
+            include identification or payment details.
           </p>
         </div>
       </div>
