@@ -34,6 +34,44 @@ type WatchInformationStepProps = {
   onChange: (value: WatchInformation) => void;
 };
 
+function getYearError(value: string): string {
+  // An empty value is allowed because the year is optional.
+  if (value === "") {
+    return "";
+  }
+
+  if (!/^[0-9]{4}$/.test(value)) {
+    return "Enter a four-digit year, or leave this field blank.";
+  }
+
+  // Read the current year during user interaction, not rendering.
+  const currentYear = new Date().getFullYear();
+  const year = Number(value);
+
+  if (year < 1 || year > currentYear) {
+    return `Enter a valid year no later than ${currentYear}, or leave this field blank.`;
+  }
+
+  return "";
+}
+
+function getPriceError(value: string): string {
+  // An empty value is allowed because the price is optional.
+  if (value === "") {
+    return "";
+  }
+
+  if (!/^[0-9]+(?:\.[0-9]{1,2})?$/.test(value)) {
+    return "Enter an amount without commas or currency symbols, using no more than two decimal places.";
+  }
+
+  if (Number(value) <= 0) {
+    return "Enter an amount greater than zero, or leave this field blank.";
+  }
+
+  return "";
+}
+
 export default function WatchInformationStep({
   value,
   onChange,
@@ -104,7 +142,8 @@ export default function WatchInformationStep({
             name="model"
             type="text"
             required
-            pattern=".*\S.*"
+            pattern={String.raw`.*\S.*`}
+            title="Enter the model, or enter Not sure if unknown."
             maxLength={120}
             value={value.model}
             onChange={(event) =>
@@ -133,6 +172,8 @@ export default function WatchInformationStep({
             id="watch-reference"
             name="referenceNumber"
             type="text"
+            pattern={String.raw`.*\S.*`}
+            title="Enter a reference number, or leave this field blank."
             maxLength={80}
             value={value.referenceNumber}
             onChange={(event) =>
@@ -161,18 +202,34 @@ export default function WatchInformationStep({
             type="text"
             inputMode="numeric"
             pattern="[0-9]{4}"
+            minLength={4}
             maxLength={4}
+            title="Enter a four-digit year that is not in the future."
             value={value.year}
-            onChange={(event) =>
-              updateField("year", event.target.value)
-            }
+            onChange={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getYearError(input.value));
+              updateField("year", input.value);
+            }}
+            onBlur={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getYearError(input.value));
+            }}
+            onInvalid={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getYearError(input.value));
+            }}
             placeholder="e.g. 2020"
             aria-describedby="watch-year-hint"
             className={fieldClassName}
           />
 
           <p id="watch-year-hint" className={hintClassName}>
-            Optional. Enter four digits, or leave blank if unknown.
+            Optional. Enter a four-digit year that is not in the
+            future, or leave blank if unknown.
           </p>
         </div>
 
@@ -325,10 +382,24 @@ export default function WatchInformationStep({
             inputMode="decimal"
             pattern="[0-9]+([.][0-9]{1,2})?"
             maxLength={15}
+            title="Enter an amount greater than zero with up to two decimal places."
             value={value.expectedPrice ?? ""}
-            onChange={(event) =>
-              updateField("expectedPrice", event.target.value)
-            }
+            onChange={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getPriceError(input.value));
+              updateField("expectedPrice", input.value);
+            }}
+            onBlur={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getPriceError(input.value));
+            }}
+            onInvalid={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(getPriceError(input.value));
+            }}
             placeholder="e.g. 15000"
             aria-describedby="watch-expected-price-hint"
             className={fieldClassName}
@@ -338,9 +409,10 @@ export default function WatchInformationStep({
             id="watch-expected-price-hint"
             className={hintClassName}
           >
-            Optional. Enter an amount without commas or currency
-            symbols, or leave blank if unsure. This is your
-            expectation, not a valuation or offer.
+            Optional. Enter an amount greater than zero without
+            commas or currency symbols, using up to two decimal
+            places. Leave blank if unsure. This is your expectation,
+            not a valuation or offer.
           </p>
         </div>
 
@@ -371,7 +443,8 @@ export default function WatchInformationStep({
             id="watch-additional-details-hint"
             className={hintClassName}
           >
-            Optional. Maximum 2,000 characters.
+            Optional. Maximum 2,000 characters. Please do not
+            include identification or payment details.
           </p>
         </div>
       </div>

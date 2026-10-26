@@ -27,6 +27,27 @@ type SellerDetailsStepProps = {
   onChange: (value: SellerDetails) => void;
 };
 
+function getPhoneError(value: string): string {
+  const phone = value.trim();
+
+  if (!phone) {
+    return "Please enter your phone number.";
+  }
+
+  // Allow a leading +, digits and common formatting characters.
+  if (!/^\+?[0-9\s().-]+$/.test(phone)) {
+    return "Use numbers, spaces, brackets or hyphens, with an optional leading +.";
+  }
+
+  const digits = phone.replace(/\D/g, "");
+
+  if (digits.length < 8 || digits.length > 15) {
+    return "Please enter a phone number containing 8 to 15 digits.";
+  }
+
+  return "";
+}
+
 export default function SellerDetailsStep({
   value,
   onChange,
@@ -68,7 +89,8 @@ export default function SellerDetailsStep({
             type="text"
             autoComplete="name"
             required
-            pattern=".*\S.*"
+            pattern={String.raw`.*\S.*`}
+            title="Enter your name using at least one non-space character."
             maxLength={120}
             value={value.fullName}
             onChange={(event) =>
@@ -92,6 +114,8 @@ export default function SellerDetailsStep({
             name="email"
             type="email"
             autoComplete="email"
+            autoCapitalize="none"
+            spellCheck={false}
             required
             maxLength={254}
             value={value.email}
@@ -120,15 +144,36 @@ export default function SellerDetailsStep({
             minLength={8}
             maxLength={30}
             value={value.phone}
-            onChange={(event) =>
-              updateField("phone", event.target.value)
-            }
+            onChange={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(
+                getPhoneError(input.value),
+              );
+
+              updateField("phone", input.value);
+            }}
+            onInvalid={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(
+                getPhoneError(input.value),
+              );
+            }}
+            onBlur={(event) => {
+              const input = event.currentTarget;
+
+              input.setCustomValidity(
+                getPhoneError(input.value),
+              );
+            }}
             aria-describedby="seller-phone-hint"
             className={fieldClassName}
           />
 
           <p id="seller-phone-hint" className={hintClassName}>
-            Include your country code if outside Australia.
+            Enter 8–15 digits. Spaces, brackets and hyphens are
+            accepted. Include your country code if outside Australia.
           </p>
         </div>
 
@@ -182,6 +227,8 @@ export default function SellerDetailsStep({
             autoComplete="postal-code"
             required
             pattern="[0-9]{4}"
+            title="Enter a four-digit Australian postcode."
+            minLength={4}
             maxLength={4}
             value={value.postcode}
             onChange={(event) =>
@@ -210,6 +257,8 @@ export default function SellerDetailsStep({
             name="suburb"
             type="text"
             autoComplete="address-level2"
+            pattern={String.raw`.*\S.*`}
+            title="Enter a suburb or town, or leave this field blank."
             maxLength={100}
             value={value.suburb}
             onChange={(event) =>
@@ -237,8 +286,7 @@ export default function SellerDetailsStep({
             onChange={(event) =>
               updateField(
                 "preferredContactMethod",
-                event.target
-                  .value as SellerDetails["preferredContactMethod"],
+                event.target.value as SellerDetails["preferredContactMethod"],
               )
             }
             className={fieldClassName}
