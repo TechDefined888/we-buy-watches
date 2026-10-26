@@ -23,6 +23,9 @@ const initialWatchInformation: WatchInformation = {
   year: "",
   condition: "",
   includedItems: "",
+  serviceHistory: "",
+  knownFaults: "",
+  expectedPrice: "",
   additionalDetails: "",
 };
 
@@ -32,6 +35,9 @@ const initialSellerDetails: SellerDetails = {
   phone: "",
   suburb: "",
   postcode: "",
+  stateOrTerritory: "",
+  preferredContactMethod: "",
+  additionalNotes: "",
 };
 
 const steps = [
@@ -92,13 +98,16 @@ export default function ValuationForm() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    // Review cannot submit until the backend is connected.
+    if (step === "review") {
+      return;
+    }
+
     const nextStep = steps[currentStepIndex + 1];
 
     if (nextStep) {
       changeStep(nextStep.id);
     }
-
-    // Submission will be connected to the backend separately.
   }
 
   function handleBack() {
@@ -234,9 +243,9 @@ export default function ValuationForm() {
                 type="button"
                 disabled
                 aria-describedby="submission-availability"
-                className="inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-md bg-[#30104B]/15 px-6 py-3 text-xs font-semibold text-[#211A26]/65"
+                className="inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-md bg-[#30104B]/15 px-6 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-[#211A26]/65"
               >
-                Submit Enquiry
+                Request My Valuation
               </button>
 
               <p

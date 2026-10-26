@@ -1,79 +1,140 @@
 "use client";
 
-import { useId, useState, type ChangeEvent } from "react";
+import {
+  useId,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 
 const MAX_FILES = 5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+const ALLOWED_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
 
 type PhotoUploadStepProps = {
   files: File[];
   onChange: (files: File[]) => void;
 };
 
+function isSameFile(first: File, second: File) {
+  return (
+    first.name === second.name &&
+    first.size === second.size &&
+    first.lastModified === second.lastModified
+  );
+}
+
 export default function PhotoUploadStep({
   files,
   onChange,
 }: PhotoUploadStepProps) {
   const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState("");
 
   function handleFiles(event: ChangeEvent<HTMLInputElement>) {
     const selectedFiles = Array.from(event.target.files ?? []);
 
-    // Allow the same file to be selected again after removal.
+    // Allow a removed file to be selected again.
     event.target.value = "";
 
     if (selectedFiles.length === 0) {
       return;
     }
 
+    setError("");
+    setFeedback("");
+
     const uniqueFiles = selectedFiles.filter(
       (file, index, selected) =>
-        !files.some(
-          (existing) =>
-            existing.name === file.name &&
-            existing.size === file.size &&
-            existing.lastModified === file.lastModified,
-        ) &&
-        selected.findIndex(
-          (candidate) =>
-            candidate.name === file.name &&
-            candidate.size === file.size &&
-            candidate.lastModified === file.lastModified,
+        !files.some((existing) => isSameFile(existing, file)) &&
+        selected.findIndex((candidate) =>
+          isSameFile(candidate, file),
         ) === index,
     );
 
-    if (files.length + uniqueFiles.length > MAX_FILES) {
-      setError("Please select no more than five photographs in total.");
+    if (uniqueFiles.length === 0) {
+      setFeedback(
+        "These photographs are already selected. No duplicates were added.",
+      );
       return;
     }
 
-    if (
-      uniqueFiles.some((file) => !ALLOWED_TYPES.includes(file.type))
-    ) {
-      setError("Please use JPG, PNG or WebP image files.");
+    if (files.length + uniqueFiles.length > MAX_FILES) {
+      setError(
+        "Please select no more than five photographs in total. No new photographs were added.",
+      );
       return;
     }
 
     if (
       uniqueFiles.some(
-        (file) => file.size === 0 || file.size > MAX_FILE_SIZE,
+        (file) => !ALLOWED_TYPES.includes(file.type),
       )
     ) {
       setError(
-        "Each photograph must be larger than 0 bytes and no more than 10 MB.",
+        "Please use JPG, PNG or WebP image files. No new photographs were added.",
+      );
+      return;
+    }
+
+    if (uniqueFiles.some((file) => file.size === 0)) {
+      setError(
+        "An empty file was selected. Please choose a photograph larger than 0 bytes. No new photographs were added.",
+      );
+      return;
+    }
+
+    if (
+      uniqueFiles.some((file) => file.size > MAX_FILE_SIZE)
+    ) {
+      setError(
+        "Each photograph must be no more than 10 MB. No new photographs were added.",
       );
       return;
     }
 
     onChange([...files, ...uniqueFiles]);
-    setError("");
+
+    const addedCount = uniqueFiles.length;
+    const duplicateCount = selectedFiles.length - addedCount;
+
+    setFeedback(
+      `${addedCount} ${
+        addedCount === 1 ? "photograph added" : "photographs added"
+      }.${
+        duplicateCount > 0
+          ? ` ${duplicateCount} duplicate ${
+              duplicateCount === 1 ? "file was" : "files were"
+            } skipped.`
+          : ""
+      }`,
+    );
   }
 
   function removeFile(index: number) {
-    onChange(files.filter((_, fileIndex) => fileIndex !== index));
+    const removedFile = files[index];
+
+    if (!removedFile) {
+      return;
+    }
+
+    onChange(
+      files.filter((_, fileIndex) => fileIndex !== index),
+    );
+
     setError("");
+    setFeedback(`${removedFile.name} removed.`);
+
+    // The removed button disappears, so restore focus.
+    inputRef.current?.focus();
   }
 
   return (
@@ -94,14 +155,15 @@ export default function PhotoUploadStep({
 
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#211A26]/75">
           <li>The dial and front of the watch.</li>
-          <li>The case back, bracelet and clasp.</li>
+          <li>The case back, bracelet or strap, and clasp.</li>
           <li>Any visible wear or damage.</li>
           <li>The box and papers, if available.</li>
         </ul>
 
         <p className="mt-4 text-xs leading-6 text-[#211A26]/75">
           Keep personal details and unique serial numbers out of
-          photographs. Please do not include identification documents.
+          photographs. Please do not include identification
+          documents.
         </p>
       </div>
 
@@ -117,22 +179,26 @@ export default function PhotoUploadStep({
           id={`${id}-help`}
           className="mt-2 text-xs leading-6 text-[#211A26]/75"
         >
-          JPG, PNG or WebP. Up to five photographs, maximum 10 MB
-          each. Selecting a file does not upload it.
+          JPG, PNG or WebP. Up to five photographs, maximum
+          10 MB each. Selecting a file does not upload it.
         </p>
 
         <input
+          ref={inputRef}
           id={`${id}-photos`}
           name="watchPhotos"
           type="file"
           accept="image/jpeg,image/png,image/webp"
           multiple
           onChange={handleFiles}
-          aria-describedby={`${id}-help ${
-            error ? `${id}-error` : ""
-          }`.trim()}
+          aria-describedby={[
+            `${id}-help`,
+            error ? `${id}-error` : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
           aria-invalid={error ? true : undefined}
-          className="mt-4 block w-full rounded-lg border border-[#30104B]/20 bg-white p-3 text-sm text-[#211A26] file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-[#30104B] file:px-4 file:py-3 file:text-sm file:font-medium file:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]"
+          className="mt-4 block w-full min-w-0 rounded-lg border border-[#30104B]/20 bg-white p-3 text-sm text-[#211A26] file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-[#30104B] file:px-4 file:py-3 file:text-sm file:font-medium file:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]"
         />
 
         {error && (
@@ -146,12 +212,19 @@ export default function PhotoUploadStep({
         )}
       </div>
 
-      <p
+      <div
         role="status"
-        className="mt-5 text-sm text-[#211A26]/75"
+        aria-atomic="true"
+        className="mt-5 text-sm leading-6 text-[#211A26]/75"
       >
-        {files.length} of {MAX_FILES} photographs selected.
-      </p>
+        <p>
+          {files.length} of {MAX_FILES} photographs selected.
+        </p>
+
+        {feedback && (
+          <p className="mt-2 break-words">{feedback}</p>
+        )}
+      </div>
 
       {files.length > 0 && (
         <ul
