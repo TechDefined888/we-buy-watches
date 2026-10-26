@@ -15,6 +15,8 @@ const watchBrands = [
   "Cartier",
   "IWC",
   "Hublot",
+  "Omega",
+  "Breitling",
   "Other",
 ];
 
@@ -72,6 +74,7 @@ export default function WatchInformationStep({
             onChange={(event) =>
               updateField("brand", event.target.value)
             }
+            aria-describedby="watch-brand-hint"
             className={fieldClassName}
           >
             <option value="">Select a brand</option>
@@ -82,6 +85,12 @@ export default function WatchInformationStep({
               </option>
             ))}
           </select>
+
+          <p id="watch-brand-hint" className={hintClassName}>
+            Selected premium Omega and Breitling models may be
+            considered. Suitability is reviewed before referral
+            to the participating dealer.
+          </p>
         </div>
 
         {/* Model */}
@@ -218,8 +227,7 @@ export default function WatchInformationStep({
             onChange={(event) =>
               updateField(
                 "includedItems",
-                event.target
-                  .value as WatchInformation["includedItems"],
+                event.target.value as WatchInformation["includedItems"],
               )
             }
             className={fieldClassName}

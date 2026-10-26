@@ -59,6 +59,16 @@ export const watchBrands = [
     href: "/sell-hublot",
     image: "/images/brands/hublot.png",
   },
+  {
+    name: "Omega",
+    href: "/sell-luxury-watches",
+    image: "/images/brands/omega.png",
+  },
+  {
+    name: "Breitling",
+    href: "/sell-luxury-watches",
+    image: "/images/brands/breitling.png",
+  },
 ];
 
 export type WatchBrand = (typeof watchBrands)[number];
