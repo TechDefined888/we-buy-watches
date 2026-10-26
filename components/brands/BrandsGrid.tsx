@@ -27,11 +27,17 @@ export default function BrandsGrid() {
             Suitability depends on the individual watch, its
             condition and the participating dealer&apos;s interest.
           </p>
+
+          <p className="mt-4 text-sm leading-7 text-[#211A26]/75">
+            Selected premium Omega and Breitling models may also
+            be considered. Enquiries are reviewed for suitability
+            before referral to the participating dealer.
+          </p>
         </div>
 
         <ul className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {watchBrands.map((brand) => (
-            <li key={brand.href} className="min-w-0">
+            <li key={brand.name} className="min-w-0">
               <BrandCard brand={brand} />
             </li>
           ))}
