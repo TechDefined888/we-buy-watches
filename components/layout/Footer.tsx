@@ -15,6 +15,11 @@ const brands = [
   { label: "Richard Mille", href: "/sell-richard-mille" },
 ];
 
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Use", href: "/terms" },
+];
+
 const linkClassName =
   "inline-block rounded text-sm text-[#514758]! transition-colors hover:text-[#30104B]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]";
 
@@ -106,10 +111,7 @@ export default function Footer() {
             <ul className="m-0 flex list-none flex-col gap-4 p-0">
               {navigation.map((item) => (
                 <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={linkClassName}
-                  >
+                  <Link href={item.href} className={linkClassName}>
                     {item.label}
                   </Link>
                 </li>
@@ -133,10 +135,7 @@ export default function Footer() {
             <ul className="m-0 flex list-none flex-col gap-4 p-0">
               {brands.map((brand) => (
                 <li key={brand.href}>
-                  <Link
-                    href={brand.href}
-                    className={linkClassName}
-                  >
+                  <Link href={brand.href} className={linkClassName}>
                     {brand.label}
                   </Link>
                 </li>
@@ -170,9 +169,9 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright and legal links */}
         <div
-          className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between"
+          className="flex flex-col gap-4 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
           style={{
             borderTop: "1px solid rgba(48, 16, 75, 0.1)",
           }}
@@ -183,6 +182,21 @@ export default function Footer() {
           >
             © 2026 We Buy Watches. All rights reserved.
           </p>
+
+          <nav aria-label="Footer legal information">
+            <ul className="m-0 flex list-none flex-wrap items-center gap-x-6 gap-y-1 p-0">
+              {legalLinks.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="inline-flex min-h-11 items-center rounded text-[11px] leading-6 text-[#514758]! underline-offset-4 transition-colors hover:text-[#30104B]! hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <p
             className="m-0 text-[10px] uppercase leading-6 tracking-[0.15em]"
