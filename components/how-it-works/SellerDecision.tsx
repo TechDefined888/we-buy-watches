@@ -18,10 +18,23 @@ export default function SellerDecision() {
         </h2>
 
         <p className="mt-5 text-sm leading-7 text-[#F7F0E3]/80">
-          We facilitate suitable introductions. The participating
-          dealer independently assesses your watch and decides
-          whether to make an offer. You choose whether to proceed,
-          and any sale is arranged directly with that dealer.
+          We review enquiries and, with your consent, refer suitable
+          enquiries to our participating dealer. The dealer
+          independently assesses your watch and decides whether to
+          make an offer.
+        </p>
+
+        <p className="mt-4 text-sm leading-7 text-[#F7F0E3]/80">
+          You are under no obligation to accept an offer. If you
+          choose to proceed, any negotiations, inspection, delivery,
+          payment and purchase arrangements are agreed directly
+          between you and the dealer.
+        </p>
+
+        <p className="mt-4 text-sm leading-7 text-[#F7F0E3]/80">
+          We Buy Watches does not purchase or take possession of
+          your watch. An offer, purchase or particular price is
+          not guaranteed.
         </p>
       </div>
     </section>

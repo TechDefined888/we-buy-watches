@@ -9,16 +9,16 @@ const steps = [
   {
     number: "01",
     icon: "watch",
-    title: "Tell us about your timepiece",
-    text: "Submit the brand, model, condition and photographs of your watch.",
+    title: "Tell us about your watch",
+    text: "Share your watch details, clear photographs and preferred contact details to begin your enquiry.",
     image: "/images/process/step-1.jpg",
     alt: "Luxury wristwatch",
   },
   {
     number: "02",
     icon: "document",
-    title: "Your enquiry is reviewed",
-    text: "We review your information and suitable enquiries may be referred to our participating buyer.",
+    title: "Review and referral",
+    text: "We review your enquiry and, with your consent, refer suitable enquiries to our participating dealer.",
     image: "/images/process/step-2.jpg",
     alt: "Documents and fountain pen",
   },
@@ -26,15 +26,15 @@ const steps = [
     number: "03",
     icon: "tag",
     title: "Explore a potential offer",
-    text: "The buyer independently assesses your watch and may contact you to discuss an offer.",
+    text: "The dealer may request further details or an inspection before deciding whether to make an offer. An offer is not guaranteed.",
     image: "/images/process/step-3.jpg",
     alt: "Luxury watch in presentation box",
   },
   {
     number: "04",
     icon: "check",
-    title: "Your decision",
-    text: "You decide whether to accept or decline. There is no obligation to sell.",
+    title: "The decision is yours",
+    text: "You decide whether to accept an offer, with no obligation to sell. Any purchase arrangements are agreed directly with the dealer.",
     image: "/images/process/step-4.jpg",
     alt: "Professional handshake",
   },
@@ -117,7 +117,7 @@ export default function HowItWorksPreview() {
         {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#9A7A3B] sm:text-[11px]">
-            HOW IT WORKS
+            How It Works
           </p>
 
           <h2
@@ -130,7 +130,7 @@ export default function HowItWorksPreview() {
 
           <p className="mx-auto mt-5 max-w-[580px] text-[13px] font-normal leading-[1.9] tracking-[0.01em] text-[#211A26]/70 sm:text-[14px]">
             Share your watch details, explore a potential offer from
-            our participating buyer, and decide whether selling is
+            our participating dealer and decide whether selling is
             right for you.
           </p>
 
@@ -254,7 +254,6 @@ export default function HowItWorksPreview() {
                   }}
                 />
 
-                {/* Card title */}
                 <h3
                   style={sectionFont}
                   className="text-[19px] font-medium leading-[1.4] tracking-[-0.025em] text-[#30104B]"
@@ -303,6 +302,9 @@ export default function HowItWorksPreview() {
               tracking-[0.18em] text-[#30104B]
               transition-colors duration-300
               hover:text-[#9A7A3B]
+              focus-visible:outline-2
+              focus-visible:outline-offset-4
+              focus-visible:outline-[#C8A75E]
             "
           >
             Discover How It Works

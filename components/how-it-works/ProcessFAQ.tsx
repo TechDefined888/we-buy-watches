@@ -2,22 +2,37 @@ const questions = [
   {
     question: "Does We Buy Watches purchase my watch?",
     answer:
-      "We Buy Watches operates as a referral platform. The participating dealer handles watch assessments, offers and purchases.",
+      "No. We Buy Watches is an independent referral platform. We do not buy, own, authenticate, take possession of or resell watches. The participating dealer independently handles assessments, offers, negotiations and purchases.",
   },
   {
-    question: "Do I have to accept an offer?",
+    question: "What happens after I submit an enquiry?",
     answer:
-      "No. Submitting an enquiry does not require you to accept an offer or sell your watch.",
+      "We review your enquiry for suitability. With your consent, suitable enquiries are referred to our participating dealer. The dealer may contact you for further information or to discuss an inspection. Not every enquiry will qualify for referral.",
   },
   {
     question: "What information should I prepare?",
     answer:
-      "Have your watch brand, model, condition and any available reference number ready. Clear photographs and information about the box, papers and service history can also help.",
+      "Prepare your watch brand, model, condition and clear photographs. Include the reference number and approximate year if known, together with details about the original box, papers, service history and any known damage or faults. Keep identification documents and unrelated personal information out of photographs.",
   },
   {
-    question: "Will I receive an immediate valuation?",
+    question: "Will I receive an immediate valuation or a guaranteed offer?",
     answer:
-      "The enquiry form does not provide an instant valuation. The participating dealer may need additional information or an inspection before deciding whether to make an offer.",
+      "No. The enquiry form does not provide an instant valuation. The participating dealer may need further information or an inspection before deciding whether to make an offer. A valuation, offer, purchase or particular price is not guaranteed.",
+  },
+  {
+    question: "Do I have to accept an offer?",
+    answer:
+      "No. Submitting an enquiry does not commit you to selling your watch. If the dealer makes an offer, you decide whether to accept or decline it.",
+  },
+  {
+    question: "Who receives my enquiry details?",
+    answer:
+      "We review the information you submit. With your referral consent, suitable enquiries are shared with our participating dealer, including your contact details, watch information and photographs, so the dealer can assess your watch and contact you about a potential offer.",
+  },
+  {
+    question: "Can I enquire from outside Melbourne?",
+    answer:
+      "Enquiries are welcome from across Australia, subject to the participating dealer’s ability to handle the transaction. Confirm any inspection, delivery, payment and purchase arrangements directly with the dealer before proceeding.",
   },
 ];
 
@@ -40,6 +55,11 @@ export default function ProcessFAQ() {
           >
             A Few Things to Know
           </h2>
+
+          <p className="mt-5 text-sm leading-7 text-[#211A26]/75">
+            Understand how your enquiry is reviewed, when details
+            are shared and who handles a potential purchase.
+          </p>
         </div>
 
         <div className="mt-9 space-y-4">

@@ -3,33 +3,33 @@ const steps = [
     number: "01",
     title: "Tell Us About Your Watch",
     description:
-      "Share your watch brand, model, condition and any available reference information. Include details about the box, papers and service history where possible.",
+      "Share your watch brand, model, condition and any available reference information. Add clear photographs, details about the original box, papers and service history, and your preferred contact details.",
     detail:
-      "Accurate details help the dealer understand your timepiece.",
+      "Keep identification documents and unrelated personal information out of photographs.",
   },
   {
     number: "02",
-    title: "Add Photographs and Contact Details",
+    title: "Review and Referral",
     description:
-      "Select clear photographs of the dial, case, bracelet and any visible wear. Provide your contact details and review the information you consent to share.",
-    detail:
-      "Keep identification documents and personal information out of photographs.",
-  },
-  {
-    number: "03",
-    title: "Your Enquiry Is Reviewed",
-    description:
-      "We review your enquiry for suitability. With your consent, suitable enquiries are referred to our participating dealer for further assessment.",
+      "We review your enquiry for suitability. With your consent, suitable enquiries are referred to our participating dealer, who independently decides whether to assess your watch further.",
     detail:
       "Not every watch or enquiry will qualify for referral.",
   },
   {
-    number: "04",
-    title: "Consider a Potential Offer",
+    number: "03",
+    title: "Explore a Potential Offer",
     description:
-      "The participating dealer may contact you to request further information, discuss an inspection or make an offer. Any purchase arrangements are agreed directly with the dealer.",
+      "The participating dealer may contact you for further information or arrange an inspection before deciding whether to make an offer. Watch assessments and offers are handled by the dealer.",
     detail:
-      "An offer or purchase is not guaranteed. The decision to accept is yours.",
+      "Submitting an enquiry does not guarantee a valuation, offer or purchase.",
+  },
+  {
+    number: "04",
+    title: "The Decision Is Yours",
+    description:
+      "If the dealer makes an offer, you decide whether to accept it. Any negotiations, inspection, delivery, payment and purchase arrangements are agreed directly between you and the dealer.",
+    detail:
+      "You are under no obligation to accept an offer. We Buy Watches does not purchase or take possession of your watch.",
   },
 ];
 
@@ -42,7 +42,7 @@ export default function ProcessSteps() {
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#795C27] sm:text-xs">
-            From Enquiry to Opportunity
+            From Enquiry to a Potential Offer
           </p>
 
           <h2
@@ -54,8 +54,9 @@ export default function ProcessSteps() {
           </h2>
 
           <p className="mt-5 text-sm leading-7 text-[#211A26]/75">
-            A straightforward introduction, with the freedom to
-            decide whether an offer is right for you.
+            Share your watch details, explore a potential offer
+            from our participating dealer and decide whether it
+            is right for you.
           </p>
         </div>
 
