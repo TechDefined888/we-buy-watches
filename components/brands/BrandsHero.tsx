@@ -6,11 +6,8 @@ export default function BrandsHero() {
     <section
       aria-labelledby="brands-page-heading"
       className="relative isolate overflow-hidden bg-[#30104B] px-5 py-14 text-[#F7F0E3] sm:px-6 sm:py-20"
-      style={{
-        fontFamily: "var(--font-nav, Arial), sans-serif",
-      }}
+      style={{ fontFamily: "var(--font-nav, Arial), sans-serif" }}
     >
-      {/* Background image */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0"
@@ -24,12 +21,10 @@ export default function BrandsHero() {
           className="object-cover object-center"
         />
 
-        {/* Responsive shade for readable text */}
-        <div className="absolute inset-0 bg-[#160B20]/70 sm:bg-[#160B20]/50 lg:bg-[#160B20]/20" />
+        <div className="absolute inset-0 bg-[#30104B]/60 sm:bg-[#160B20]/50 lg:bg-[#160B20]/20" />
 
-        {/* Subtle top and bottom shading */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hidden sm:block"
           style={{
             background:
               "linear-gradient(180deg, rgba(15,7,23,0.25) 0%, transparent 40%, rgba(15,7,23,0.20) 100%)",
@@ -38,13 +33,12 @@ export default function BrandsHero() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Breadcrumb */}
         <nav aria-label="Breadcrumb">
           <ol className="m-0 flex list-none flex-wrap items-center gap-3 p-0 text-xs text-[#F7F0E3]/80">
             <li>
               <Link
                 href="/"
-                className="rounded text-[#F7F0E3]/80! transition-colors hover:text-[#E1C17E]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#E1C17E]"
+                className="rounded text-[#F7F0E3]/80! transition-colors hover:text-[#E1C17E]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C8A75E]"
               >
                 Home
               </Link>
@@ -53,17 +47,13 @@ export default function BrandsHero() {
             <li aria-hidden="true">/</li>
 
             <li>
-              <span
-                aria-current="page"
-                className="text-[#F7F0E3]/80"
-              >
+              <span aria-current="page" className="text-[#F7F0E3]/80">
                 Watch Brands
               </span>
             </li>
           </ol>
         </nav>
 
-        {/* Hero content */}
         <div className="mx-auto mt-10 max-w-3xl text-center sm:mt-14">
           <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#E1C17E] sm:text-xs">
             Exceptional Watchmakers
@@ -78,7 +68,6 @@ export default function BrandsHero() {
             }}
           >
             Iconic Brands.
-
             <span className="mt-2 block text-[#E1C17E]">
               Exceptional Timepieces.
             </span>
@@ -90,10 +79,9 @@ export default function BrandsHero() {
           />
 
           <p className="mx-auto mb-0 mt-6 max-w-2xl text-sm leading-7 text-[#F7F0E3]/80 sm:text-[15px]">
-            Explore the luxury watch brands we focus on. If you
-            are considering selling a timepiece in Australia,
-            discover your brand and learn how our referral
-            process works.
+            Explore the luxury watch brands we focus on. If you are considering
+            selling a timepiece in Australia, discover your brand and learn how
+            our referral process works.
           </p>
         </div>
       </div>

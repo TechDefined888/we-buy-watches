@@ -5,7 +5,6 @@ import { useRef, useState, type ChangeEvent } from "react";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const [soundOn, setSoundOn] = useState(false);
   const [volume, setVolume] = useState(0.7);
 
@@ -36,9 +35,7 @@ export default function Hero() {
     }
   };
 
-  const handleVolumeChange = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextVolume = Number(event.target.value);
     const video = videoRef.current;
 
@@ -55,16 +52,14 @@ export default function Hero() {
     <section
       aria-labelledby="hero-heading"
       className="
-        relative isolate flex w-full items-center overflow-hidden bg-black
-        min-h-[calc(100svh-150px)]
-        min-[480px]:min-h-[calc(100svh-154px)]
-        lg:min-h-[calc(100svh-170px)]
+        relative isolate flex w-full items-end overflow-hidden bg-black
+        min-h-[calc(100svh_-_97px)]
+        min-[480px]:min-h-[calc(100svh_-_104px)]
+        sm:items-center
+        lg:min-h-[calc(100svh_-_170px)]
       "
-      style={{
-        fontFamily: "var(--font-nav, Arial), sans-serif",
-      }}
+      style={{ fontFamily: "var(--font-nav, Arial), sans-serif" }}
     >
-      {/* Background video */}
       <video
         ref={videoRef}
         autoPlay
@@ -72,17 +67,12 @@ export default function Hero() {
         loop
         playsInline
         preload="metadata"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-[42%_50%] sm:object-center"
       >
-        <source
-          src="/videos/hero-watch.mp4"
-          type="video/mp4"
-        />
-
+        <source src="/videos/hero-watch.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Left shadow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -92,7 +82,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Purple glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -102,7 +91,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Bottom fade */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -112,23 +100,20 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
       <div
         className="
           relative z-20 mx-auto w-full max-w-[1600px]
-          px-6 pb-28 pt-12
+          px-5 pb-20 pt-8
           sm:px-10 sm:pb-28 sm:pt-16
-          lg:px-16 lg:py-20
-          xl:px-20
+          lg:px-16 lg:py-20 xl:px-20
         "
       >
-        <div className="max-w-[720px]">
+        <div className="max-w-[340px] sm:max-w-[720px]">
           <div className="flex items-center gap-4">
             <span
               aria-hidden="true"
               className="h-px w-8 shrink-0 bg-[#C8A75E]/70"
             />
-
             <p className="m-0 text-[9px] font-medium uppercase leading-5 tracking-[0.3em] text-[#D8BA73] sm:text-[10px]">
               WE BUY WATCHES
             </p>
@@ -141,48 +126,57 @@ export default function Hero() {
               fontWeight: 400,
             }}
             className="
-              mt-7 text-[clamp(2rem,5vw,4.5rem)]
+              mt-4 text-[clamp(1.625rem,6vw,2rem)]
               leading-[1.12] tracking-[-0.045em] text-[#F7F0E3]
+              sm:mt-7 sm:text-[clamp(2rem,5vw,4.5rem)]
             "
           >
             Looking to Sell
-
-            <span className="mt-2 block text-[#D8BA73]">
+            <span className="mt-1 block text-[#D8BA73] sm:mt-2">
               Your Luxury Watch?
             </span>
           </h1>
 
-          <p className="mt-7 max-w-[480px] text-[13px] font-normal leading-[1.9] tracking-[0.01em] text-[#E8E1EC]/80 sm:text-[14px]">
-            From sought-after Rolex references to exceptional
-            collector timepieces, tell us about your watch and
-            connect with our participating Australian luxury watch
-            buyer to explore a potential offer.
+          <p
+            className="
+              mt-4 max-w-[480px] text-xs font-normal leading-relaxed
+              tracking-[0.01em] text-[#E8E1EC]/80
+              sm:mt-7 sm:text-[14px] sm:leading-[1.9]
+            "
+          >
+            From sought-after Rolex references to exceptional collector
+            timepieces, tell us about your watch and connect with our
+            participating Australian luxury watch buyer to explore a
+            potential offer.
           </p>
 
-          <p className="mt-4 max-w-[480px] text-xs leading-6 text-white/80">
+          <p className="mt-2 max-w-[480px] text-xs leading-5 text-white/80 sm:mt-4 sm:leading-6">
             For owners of desirable luxury watches across Australia.
           </p>
 
-          <div className="mt-9 flex flex-col items-start gap-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8">
+          <div
+            className="
+              mt-5 flex flex-col items-start gap-2
+              sm:mt-9 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8
+            "
+          >
             <Link
               href="/sell-luxury-watches"
               className="
-                group inline-flex min-h-[52px] max-w-full
-                items-center justify-center gap-6
+                group inline-flex min-h-11 max-w-full
+                items-center justify-center gap-3
                 rounded-[3px] border border-[#D8BA73]
-                bg-[#D8BA73] px-7 py-4
+                bg-[#D8BA73] px-4 py-2
                 text-[9px] font-semibold uppercase
                 tracking-[0.14em] text-[#211A26]!
                 transition-colors duration-300
                 hover:border-[#E7CC96] hover:bg-[#E7CC96]
-                focus-visible:outline-2
-                focus-visible:outline-offset-4
+                focus-visible:outline-2 focus-visible:outline-offset-4
                 focus-visible:outline-[#D8BA73]
-                sm:text-[10px]
+                sm:min-h-[52px] sm:gap-6 sm:px-7 sm:py-4 sm:text-[10px]
               "
             >
               <span>REQUEST A PRIVATE VALUATION</span>
-
               <span
                 aria-hidden="true"
                 className="shrink-0 text-lg font-normal leading-none transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
@@ -194,22 +188,18 @@ export default function Hero() {
             <Link
               href="/how-it-works"
               className="
-                group inline-flex min-h-[44px]
-                items-center gap-4
+                group inline-flex min-h-[44px] items-center gap-4
                 border-b border-[#F7F0E3]/30 py-2
                 text-[9px] font-medium uppercase
                 tracking-[0.18em] text-[#F7F0E3]!
                 transition-colors duration-300
-                hover:border-[#D8BA73]
-                hover:text-[#D8BA73]!
-                focus-visible:outline-2
-                focus-visible:outline-offset-4
+                hover:border-[#D8BA73] hover:text-[#D8BA73]!
+                focus-visible:outline-2 focus-visible:outline-offset-4
                 focus-visible:outline-[#D8BA73]
                 sm:text-[10px]
               "
             >
               HOW IT WORKS
-
               <span
                 aria-hidden="true"
                 className="text-base transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
@@ -221,22 +211,18 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Audio controls */}
       <div className="group absolute bottom-6 right-6 z-30 flex flex-col items-center sm:bottom-8 sm:right-8 lg:bottom-10 lg:right-10">
         <div
           className="
             pointer-events-none mb-3 flex h-0 w-12
             items-center justify-center overflow-hidden
-            rounded-full border border-white/40
-            bg-black/85 opacity-0
+            rounded-full border border-white/40 bg-black/85 opacity-0
             shadow-[0_10px_30px_rgba(0,0,0,0.45)]
             transition-all duration-300
-            group-hover:pointer-events-auto
-            group-hover:h-[118px]
+            group-hover:pointer-events-auto group-hover:h-[118px]
             group-hover:opacity-100
             group-focus-within:pointer-events-auto
-            group-focus-within:h-[118px]
-            group-focus-within:opacity-100
+            group-focus-within:h-[118px] group-focus-within:opacity-100
             motion-reduce:transition-none
           "
         >
@@ -249,10 +235,7 @@ export default function Hero() {
             onChange={handleVolumeChange}
             aria-label="Video volume"
             className="h-[85px] w-4 cursor-pointer accent-white"
-            style={{
-              writingMode: "vertical-lr",
-              direction: "rtl",
-            }}
+            style={{ writingMode: "vertical-lr", direction: "rtl" }}
           />
         </div>
 
@@ -263,15 +246,12 @@ export default function Hero() {
           title={soundOn ? "Mute" : "Unmute"}
           className="
             flex h-12 w-12 items-center justify-center
-            rounded-full border border-white/50
-            bg-black/85 text-white
+            rounded-full border border-white/50 bg-black/85 text-white
             shadow-[0_10px_30px_rgba(0,0,0,0.45)]
             transition-colors duration-300
             hover:border-white hover:bg-white hover:text-black
-            focus-visible:outline-2
-            focus-visible:outline-offset-4
-            focus-visible:outline-[#D8BA73]
-            motion-reduce:transition-none
+            focus-visible:outline-2 focus-visible:outline-offset-4
+            focus-visible:outline-[#D8BA73] motion-reduce:transition-none
           "
         >
           {soundOn ? <VolumeOnIcon /> : <VolumeOffIcon />}
@@ -283,13 +263,7 @@ export default function Hero() {
 
 function VolumeOnIcon() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M11 5L6 9H2V15H6L11 19V5Z"
         stroke="currentColor"
@@ -297,14 +271,12 @@ function VolumeOnIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
       <path
         d="M15 9.5C16.3 10.8 16.3 13.2 15 14.5"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
       />
-
       <path
         d="M18 7C20.8 9.8 20.8 14.2 18 17"
         stroke="currentColor"
@@ -317,13 +289,7 @@ function VolumeOnIcon() {
 
 function VolumeOffIcon() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M11 5L6 9H2V15H6L11 19V5Z"
         stroke="currentColor"
@@ -331,7 +297,6 @@ function VolumeOffIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
       <path
         d="M16 10L21 15M21 10L16 15"
         stroke="currentColor"
