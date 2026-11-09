@@ -7,18 +7,25 @@ import {
   type ChangeEvent,
 } from "react";
 
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-const ALLOWED_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
+import {
+  ALLOWED_PHOTO_TYPES,
+  MAX_PHOTOS,
+  MAX_PHOTO_SIZE_BYTES,
+  PHOTO_INPUT_ACCEPT,
+} from "@/lib/valuation/config";
 
 type PhotoUploadStepProps = {
   files: File[];
   onChange: (files: File[]) => void;
+};
+
+const extensionMimeTypes: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  heic: "image/heic",
+  heif: "image/heif",
 };
 
 function isSameFile(first: File, second: File) {
@@ -27,6 +34,45 @@ function isSameFile(first: File, second: File) {
     first.size === second.size &&
     first.lastModified === second.lastModified
   );
+}
+
+function normalisePhotoType(file: File): File {
+  const currentType = file.type.toLowerCase();
+
+  if (
+    ALLOWED_PHOTO_TYPES.some(
+      (allowedType) => allowedType === currentType,
+    )
+  ) {
+    return file;
+  }
+
+  // Some browsers provide no MIME type for HEIC/HEIF files.
+  // The server must still verify the actual file contents.
+  if (
+    currentType !== "" &&
+    currentType !== "application/octet-stream"
+  ) {
+    return file;
+  }
+
+  const extension = file.name
+    .split(".")
+    .pop()
+    ?.toLowerCase();
+
+  const inferredType = extension
+    ? extensionMimeTypes[extension]
+    : undefined;
+
+  if (!inferredType) {
+    return file;
+  }
+
+  return new File([file], file.name, {
+    type: inferredType,
+    lastModified: file.lastModified,
+  });
 }
 
 export default function PhotoUploadStep({
@@ -39,10 +85,14 @@ export default function PhotoUploadStep({
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState("");
 
-  function handleFiles(event: ChangeEvent<HTMLInputElement>) {
-    const selectedFiles = Array.from(event.target.files ?? []);
+  function handleFiles(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const selectedFiles = Array.from(
+      event.target.files ?? [],
+    ).map(normalisePhotoType);
 
-    // Allow a removed file to be selected again.
+    // Allow the same file to be selected again after removal.
     event.target.value = "";
 
     if (selectedFiles.length === 0) {
@@ -54,7 +104,9 @@ export default function PhotoUploadStep({
 
     const uniqueFiles = selectedFiles.filter(
       (file, index, selected) =>
-        !files.some((existing) => isSameFile(existing, file)) &&
+        !files.some((existing) =>
+          isSameFile(existing, file),
+        ) &&
         selected.findIndex((candidate) =>
           isSameFile(candidate, file),
         ) === index,
@@ -67,20 +119,24 @@ export default function PhotoUploadStep({
       return;
     }
 
-    if (files.length + uniqueFiles.length > MAX_FILES) {
+    if (files.length + uniqueFiles.length > MAX_PHOTOS) {
       setError(
         "Please select no more than five photographs in total. No new photographs were added.",
       );
       return;
     }
 
-    if (
-      uniqueFiles.some(
-        (file) => !ALLOWED_TYPES.includes(file.type),
-      )
-    ) {
+    const hasUnsupportedType = uniqueFiles.some(
+      (file) =>
+        !ALLOWED_PHOTO_TYPES.some(
+          (allowedType) =>
+            allowedType === file.type.toLowerCase(),
+        ),
+    );
+
+    if (hasUnsupportedType) {
       setError(
-        "Please use JPG, PNG or WebP image files. No new photographs were added.",
+        "Please use JPG, PNG, WebP, HEIC or HEIF image files. No new photographs were added.",
       );
       return;
     }
@@ -93,7 +149,9 @@ export default function PhotoUploadStep({
     }
 
     if (
-      uniqueFiles.some((file) => file.size > MAX_FILE_SIZE)
+      uniqueFiles.some(
+        (file) => file.size > MAX_PHOTO_SIZE_BYTES,
+      )
     ) {
       setError(
         "Each photograph must be no more than 10 MB. No new photographs were added.",
@@ -104,15 +162,20 @@ export default function PhotoUploadStep({
     onChange([...files, ...uniqueFiles]);
 
     const addedCount = uniqueFiles.length;
-    const duplicateCount = selectedFiles.length - addedCount;
+    const duplicateCount =
+      selectedFiles.length - addedCount;
 
     setFeedback(
       `${addedCount} ${
-        addedCount === 1 ? "photograph added" : "photographs added"
+        addedCount === 1
+          ? "photograph added"
+          : "photographs added"
       }.${
         duplicateCount > 0
           ? ` ${duplicateCount} duplicate ${
-              duplicateCount === 1 ? "file was" : "files were"
+              duplicateCount === 1
+                ? "file was"
+                : "files were"
             } skipped.`
           : ""
       }`,
@@ -127,13 +190,14 @@ export default function PhotoUploadStep({
     }
 
     onChange(
-      files.filter((_, fileIndex) => fileIndex !== index),
+      files.filter(
+        (_, fileIndex) => fileIndex !== index,
+      ),
     );
 
     setError("");
     setFeedback(`${removedFile.name} removed.`);
 
-    // The removed button disappears, so restore focus.
     inputRef.current?.focus();
   }
 
@@ -144,8 +208,8 @@ export default function PhotoUploadStep({
       </legend>
 
       <p className="mt-3 text-sm leading-7 text-[#211A26]/75">
-        Add clear photographs to help the participating dealer
-        understand your timepiece.
+        Add clear photographs to help the participating
+        dealer understand your timepiece.
       </p>
 
       <div className="mt-6 rounded-xl bg-[#F7F0E3] p-5">
@@ -155,15 +219,17 @@ export default function PhotoUploadStep({
 
         <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-[#211A26]/75">
           <li>The dial and front of the watch.</li>
-          <li>The case back, bracelet or strap, and clasp.</li>
+          <li>
+            The case back, bracelet or strap, and clasp.
+          </li>
           <li>Any visible wear or damage.</li>
           <li>The box and papers, if available.</li>
         </ul>
 
         <p className="mt-4 text-xs leading-6 text-[#211A26]/75">
-          Keep personal details and unique serial numbers out of
-          photographs. Please do not include identification
-          documents.
+          Keep personal details and unique serial numbers
+          out of photographs. Please do not include
+          identification documents.
         </p>
       </div>
 
@@ -179,8 +245,9 @@ export default function PhotoUploadStep({
           id={`${id}-help`}
           className="mt-2 text-xs leading-6 text-[#211A26]/75"
         >
-          JPG, PNG or WebP. Up to five photographs, maximum
-          10 MB each. Selecting a file does not upload it.
+          JPG, PNG, WebP, HEIC or HEIF. Up to five
+          photographs, maximum 10 MB each. Selecting a
+          file does not upload it.
         </p>
 
         <input
@@ -188,7 +255,7 @@ export default function PhotoUploadStep({
           id={`${id}-photos`}
           name="watchPhotos"
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept={PHOTO_INPUT_ACCEPT}
           multiple
           onChange={handleFiles}
           aria-describedby={[
@@ -218,11 +285,14 @@ export default function PhotoUploadStep({
         className="mt-5 text-sm leading-6 text-[#211A26]/75"
       >
         <p>
-          {files.length} of {MAX_FILES} photographs selected.
+          {files.length} of {MAX_PHOTOS} photographs
+          selected.
         </p>
 
         {feedback && (
-          <p className="mt-2 break-words">{feedback}</p>
+          <p className="mt-2 break-words">
+            {feedback}
+          </p>
         )}
       </div>
 
@@ -242,7 +312,11 @@ export default function PhotoUploadStep({
                 </p>
 
                 <p className="mt-1 text-xs text-[#211A26]/70">
-                  {(file.size / (1024 * 1024)).toFixed(2)} MB
+                  {(
+                    file.size /
+                    (1024 * 1024)
+                  ).toFixed(2)}{" "}
+                  MB
                 </p>
               </div>
 

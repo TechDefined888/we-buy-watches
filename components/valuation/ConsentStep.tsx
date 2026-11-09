@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { REFERRAL_CONSENT_TEXT } from "@/lib/valuation/config";
+
 import type {
   SellerDetails,
   WatchInformation,
@@ -16,7 +18,10 @@ type ConsentStepProps = {
   onEdit: (step: "watch" | "photos" | "seller") => void;
 };
 
-type ReviewDetail = [label: string, value: string | undefined];
+type ReviewDetail = [
+  label: string,
+  value: string | undefined,
+];
 
 const conditionLabels: Record<string, string> = {
   unworn: "Unworn",
@@ -97,7 +102,9 @@ export default function ConsentStep({
     ["Postcode", seller.postcode],
     [
       "Preferred contact method",
-      contactMethodLabels[seller.preferredContactMethod ?? ""],
+      contactMethodLabels[
+        seller.preferredContactMethod ?? ""
+      ],
     ],
     ["Additional notes", seller.additionalNotes],
   ];
@@ -109,8 +116,8 @@ export default function ConsentStep({
       </legend>
 
       <p className="mt-3 text-sm leading-7 text-[#211A26]/75">
-        Check your details before submitting. You can return to
-        any section to make changes.
+        Check your details before submitting. You can
+        return to any section to make changes.
       </p>
 
       <div className="mt-7 space-y-5">
@@ -144,9 +151,11 @@ export default function ConsentStep({
                 key={label}
                 className="grid gap-1 text-sm sm:grid-cols-[160px_1fr] sm:gap-4"
               >
-                <dt className="text-[#211A26]/70">{label}</dt>
+                <dt className="text-[#211A26]/70">
+                  {label}
+                </dt>
 
-                <dd className="min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
+                <dd className="m-0 min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
                   {value?.trim() || "Not provided"}
                 </dd>
               </div>
@@ -226,9 +235,11 @@ export default function ConsentStep({
                 key={label}
                 className="grid gap-1 text-sm sm:grid-cols-[160px_1fr] sm:gap-4"
               >
-                <dt className="text-[#211A26]/70">{label}</dt>
+                <dt className="text-[#211A26]/70">
+                  {label}
+                </dt>
 
-                <dd className="min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
+                <dd className="m-0 min-w-0 whitespace-pre-wrap break-words text-[#211A26]">
                   {value?.trim() || "Not provided"}
                 </dd>
               </div>
@@ -241,9 +252,9 @@ export default function ConsentStep({
       <div className="mt-6 rounded-xl bg-[#F7F0E3] p-5">
         <p className="text-sm leading-7 text-[#211A26]/80">
           We Buy Watches operates as a referral platform.
-          Assessments, offers and purchases are handled by the
-          participating dealer. Submitting an enquiry does not
-          require you to accept an offer.
+          Assessments, offers and purchases are handled by
+          the participating dealer. Submitting an enquiry
+          does not require you to accept an offer.
         </p>
 
         <label
@@ -262,12 +273,7 @@ export default function ConsentStep({
             className="mt-1 h-5 w-5 shrink-0 accent-[#30104B] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#30104B]"
           />
 
-          <span>
-            I consent to We Buy Watches reviewing my enquiry and
-            sharing my contact details, watch information and
-            photographs with the participating dealer so they can
-            assess my watch and contact me about a potential offer.
-          </span>
+          <span>{REFERRAL_CONSENT_TEXT}</span>
         </label>
 
         <p className="mt-4 text-xs leading-6 text-[#211A26]/80">
@@ -279,7 +285,10 @@ export default function ConsentStep({
             Privacy Policy
           </Link>{" "}
           and{" "}
-          <Link href="/terms" className={policyLinkClassName}>
+          <Link
+            href="/terms"
+            className={policyLinkClassName}
+          >
             Terms of Use
           </Link>
           .
