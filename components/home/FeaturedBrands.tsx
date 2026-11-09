@@ -10,61 +10,85 @@ const brands = [
     name: "Rolex",
     href: "/sell-rolex",
     image: "/images/brands/rolex.png",
+    logoSize: "max-w-[145px] h-[78px]",
+    logoScale: 1.3,
   },
   {
     name: "Patek Philippe",
     href: "/sell-patek-philippe",
     image: "/images/brands/patek-philippe.png",
+    logoSize: "max-w-[165px] h-[86px]",
+    logoScale: 1.5,
   },
   {
     name: "Audemars Piguet",
     href: "/sell-audemars-piguet",
     image: "/images/brands/audemars-piguet.png",
+    logoSize: "max-w-[160px] h-[84px]",
+    logoScale: 1.5,
   },
   {
     name: "Richard Mille",
     href: "/sell-richard-mille",
     image: "/images/brands/richard-mille.png",
+    logoSize: "max-w-[155px] h-[68px]",
+    logoScale: 1.05,
   },
   {
     name: "Vacheron Constantin",
     href: "/sell-vacheron-constantin",
     image: "/images/brands/vacheron-constantin.png",
+    logoSize: "max-w-[185px] h-[90px]",
+    logoScale: 1.8,
   },
   {
     name: "A. Lange & Söhne",
     href: "/sell-a-lange-sohne",
     image: "/images/brands/a-lange-sohne.png",
+    logoSize: "max-w-[200px] h-[94px]",
+    logoScale: 1.7,
   },
   {
     name: "F.P. Journe",
     href: "/sell-fp-journe",
     image: "/images/brands/fp-journe.png",
+    logoSize: "max-w-[185px] h-[88px]",
+    logoScale: 1.55,
   },
   {
     name: "Breguet",
     href: "/sell-breguet",
     image: "/images/brands/breguet.png",
+    logoSize: "max-w-[195px] h-[90px]",
+    logoScale: 1.65,
   },
   {
     name: "Jaeger-LeCoultre",
     href: "/sell-jaeger-lecoultre",
     image: "/images/brands/jaeger-lecoultre.png",
+    logoSize: "max-w-[200px] h-[94px]",
+    logoScale: 1.85,
   },
   {
     name: "Cartier",
     href: "/sell-cartier",
     image: "/images/brands/cartier.png",
+    logoSize: "max-w-[180px] h-[82px]",
+    logoScale: 1.65,
   },
   {
     name: "IWC",
     href: "/sell-iwc",
     image: "/images/brands/iwc.png",
+    logoSize: "max-w-[165px] h-[78px]",
+    logoScale: 1.5,
   },
   {
     name: "Hublot",
     href: "/sell-hublot",
     image: "/images/brands/hublot.png",
+    logoSize: "max-w-[145px] h-[72px]",
+    logoScale: 1.3,
   },
 ];
 
@@ -85,7 +109,7 @@ export default function FeaturedBrands() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6">
         {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#9A7A3B] sm:text-[11px]">
@@ -114,17 +138,22 @@ export default function FeaturedBrands() {
               href={brand.href}
               aria-label={`Explore ${brand.name}`}
               className="
-                group relative flex h-[96px]
+                group relative flex h-[96px] min-w-0
                 items-center justify-center overflow-hidden
                 rounded-[10px] border border-[#30104B]/10
-                bg-white/45 px-4
+                bg-white/45 px-3
                 shadow-[0_4px_14px_rgba(33,26,38,0.04)]
                 transition-all duration-300
                 hover:-translate-y-[2px]
                 hover:border-[#C8A75E]/80
                 hover:bg-white/80
                 hover:shadow-[0_8px_22px_rgba(33,26,38,0.08)]
-                sm:h-[100px] lg:h-[104px]
+                focus-visible:outline-2
+                focus-visible:outline-offset-4
+                focus-visible:outline-[#30104B]
+                motion-reduce:transform-none
+                motion-reduce:transition-none
+                sm:h-[100px] sm:px-4 lg:h-[104px]
               "
             >
               {/* Hover glow */}
@@ -134,6 +163,7 @@ export default function FeaturedBrands() {
                   pointer-events-none absolute inset-0
                   opacity-0 transition-opacity duration-300
                   group-hover:opacity-100
+                  motion-reduce:transition-none
                 "
                 style={{
                   background:
@@ -141,26 +171,37 @@ export default function FeaturedBrands() {
                 }}
               />
 
-              {/* Logo */}
-              <div className="relative flex h-full w-full items-center justify-center transition-transform duration-300 group-hover:scale-[1.03]">
-                <Image
-                  src={brand.image}
-                  alt={`${brand.name} logo`}
-                  width={320}
-                  height={160}
-                  className="
-                    max-h-[62px] w-auto max-w-[74%]
-                    object-contain
-                    sm:max-h-[66px] lg:max-h-[70px]
-                  "
-                />
+              {/* Brand logo */}
+              <div className="pointer-events-none relative flex h-full w-full min-w-0 items-center justify-center">
+                <div
+                  className={`
+                    relative w-full
+                    transition-transform duration-300
+                    group-hover:scale-[1.03]
+                    motion-reduce:transform-none
+                    motion-reduce:transition-none
+                    ${brand.logoSize}
+                  `}
+                >
+                  <Image
+                    src={brand.image}
+                    alt={`${brand.name} logo`}
+                    fill
+                    sizes="(max-width: 639px) 60vw, 360px"
+                    className="object-contain"
+                    style={{
+                      transform: `scale(${brand.logoScale})`,
+                      transformOrigin: "center",
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Hover arrow */}
               <span
                 aria-hidden="true"
                 className="
-                  absolute right-3 top-1/2
+                  absolute right-3 top-1/2 z-10
                   flex h-7 w-7
                   -translate-y-1/2 translate-x-2
                   items-center justify-center rounded-full
@@ -170,6 +211,9 @@ export default function FeaturedBrands() {
                   transition-all duration-300
                   group-hover:translate-x-0
                   group-hover:opacity-100
+                  group-focus-visible:translate-x-0
+                  group-focus-visible:opacity-100
+                  motion-reduce:transition-none
                 "
               >
                 →
@@ -184,35 +228,50 @@ export default function FeaturedBrands() {
                   bg-[#C8A75E]
                   transition-all duration-300
                   group-hover:w-[55%]
+                  group-focus-visible:w-[55%]
+                  motion-reduce:transition-none
                 "
               />
             </Link>
           ))}
         </div>
 
-        {/* Explore all brands */}
-        <div className="mt-9 text-center">
+        {/* Explore all brands button */}
+        <div className="mt-9 flex justify-center">
           <Link
             href="/brands"
             className="
-              group inline-flex items-center
-              text-[11px] font-semibold uppercase
-              tracking-[0.16em] text-[#30104B]
+              group inline-flex min-h-12
+              items-center justify-center gap-5
+              rounded-[6px] border-0
+              bg-[#30104B]! px-6 py-3
+              text-[14px] font-normal normal-case
+              tracking-normal text-white!
+              no-underline!
               transition-colors duration-300
-              hover:text-[#9A7A3B]
+              hover:bg-[#421765]!
+              focus-visible:outline-2
+              focus-visible:outline-offset-4
+              focus-visible:outline-[#30104B]
+              motion-reduce:transition-none
+              sm:text-[15px]
             "
+            style={{ fontFamily: "inherit" }}
           >
             Explore All Brands
 
             <span
               aria-hidden="true"
-              className="ml-3 transition-transform duration-300 group-hover:translate-x-1"
+              className="
+                text-xl leading-none
+                transition-transform duration-300
+                group-hover:translate-x-1
+                motion-reduce:transform-none
+              "
             >
               →
             </span>
           </Link>
-
-          <div className="mx-auto mt-2 h-px w-20 bg-[#C8A75E]" />
         </div>
       </div>
     </section>
