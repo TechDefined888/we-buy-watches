@@ -77,13 +77,20 @@ async function readBoundedBody(
 
 export async function POST(request: NextRequest) {
 
-const previewEnabled =
-  process.env.VERCEL_ENV === "preview" &&
-  process.env.ENQUIRY_PREVIEW_ENABLED === "true";
+  const vercelPreviewEnabled =
+    process.env.VERCEL_ENV === "preview" &&
+    process.env.ENQUIRY_PREVIEW_ENABLED === "true";
 
-if (process.env.NODE_ENV !== "development" && !previewEnabled) {
-  return new NextResponse(null, { status: 404 });
-}
+  const netlifyTestEnabled =
+    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
+
+  if (
+    process.env.NODE_ENV !== "development" &&
+    !vercelPreviewEnabled &&
+    !netlifyTestEnabled
+  ) {
+    return new NextResponse(null, { status: 404 });
+  }
 
   // Accept requests from this site's origin only.
   if (

@@ -14,10 +14,7 @@ const resultSchema = z
   .array(
     z.object({
       allowed: z.boolean(),
-      retry_after_seconds: z
-        .number()
-        .int()
-        .min(0),
+      retry_after_seconds: z.number().int().min(0),
     }),
   )
   .length(1);
@@ -30,9 +27,7 @@ function getClientIdentifier(request: Request): string {
       .toLowerCase();
 
     if (!ip || !isIP(ip)) {
-      throw new Error(
-        "Trusted client address is unavailable.",
-      );
+      throw new Error("Trusted client address is unavailable.");
     }
 
     return ip;
@@ -43,34 +38,41 @@ function getClientIdentifier(request: Request): string {
     return "local-development";
   }
 
-  throw new Error(
-    "The hosting platform is not configured.",
-  );
-}
+  if (process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true") {
+    const ip = request.headers
+      .get("x-nf-client-connection-ip")
+      ?.trim()
+      .toLowerCase();
 
-function createRateLimitHash(
-  identifier: string,
-): string {
-  const secret =
-    process.env.SUPABASE_SECRET_KEY?.trim();
+    if (!ip || !isIP(ip)) {
+      throw new Error("Trusted client address is unavailable.");
+    }
 
-  if (!secret) {
-    throw new Error(
-      "Missing server configuration.",
-    );
+    return ip;
   }
 
-  const signingKey = createHmac(
-    "sha256",
-    secret,
-  )
+  throw new Error("The hosting platform is not configured.");
+}
+
+function createRateLimitHash(identifier: string): string {
+  const secret = process.env.SUPABASE_SECRET_KEY?.trim();
+
+  if (!secret) {
+    throw new Error("Missing server configuration.");
+  }
+
+  const signingKey = createHmac("sha256", secret)
     .update("we-buy-watches:rate-limit:v1")
     .digest();
 
-  const environment =
-    process.env.VERCEL_ENV ??
-    process.env.NODE_ENV ??
-    "unknown";
+  const netlifyTestEnabled =
+    process.env.VERCEL !== "1" &&
+    process.env.NODE_ENV !== "development" &&
+    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
+
+  const environment = netlifyTestEnabled
+    ? "netlify-test"
+    : (process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown");
 
   return createHmac("sha256", signingKey)
     .update(`${environment}\0${identifier}`)
@@ -82,12 +84,8 @@ export async function enforceEnquiryRateLimit(
   scope: RateLimitScope,
 ): Promise<NextResponse | null> {
   try {
-    const identifier =
-      getClientIdentifier(request);
-
-    const keyHash =
-      createRateLimitHash(identifier);
-
+    const identifier = getClientIdentifier(request);
+    const keyHash = createRateLimitHash(identifier);
     const supabase = createSupabaseAdmin();
 
     const { data, error } = await supabase.rpc(
@@ -99,54 +97,39 @@ export async function enforceEnquiryRateLimit(
     );
 
     if (error) {
-      console.error(
-        "Enquiry rate-limit check failed.",
-        { code: error.code },
-      );
+      console.error("Enquiry rate-limit check failed.", {
+        code: error.code,
+      });
 
-      throw new Error(
-        "Rate-limit check unavailable.",
-      );
+      throw new Error("Rate-limit check unavailable.");
     }
 
     const parsed = resultSchema.safeParse(data);
 
     if (!parsed.success) {
-      throw new Error(
-        "Invalid rate-limit response.",
-      );
+      throw new Error("Invalid rate-limit response.");
     }
 
     const result = parsed.data[0];
 
     if (!result) {
-      throw new Error(
-        "Missing rate-limit response.",
-      );
+      throw new Error("Missing rate-limit response.");
     }
 
     if (result.allowed) {
       return null;
     }
 
-    const retryAfter = Math.max(
-      1,
-      result.retry_after_seconds,
-    );
-
-    const minutes = Math.ceil(
-      retryAfter / 60,
-    );
+    const retryAfter = Math.max(1, result.retry_after_seconds);
+    const minutes = Math.ceil(retryAfter / 60);
 
     return NextResponse.json(
       {
         ok: false,
         code: "RATE_LIMITED",
-        message:
-          `Too many requests. Please try again in about ` +
-          `${minutes} ${
-            minutes === 1 ? "minute" : "minutes"
-          }.`,
+        message: `Too many requests. Please try again in about ${minutes} ${
+          minutes === 1 ? "minute" : "minutes"
+        }.`,
         retryAfterSeconds: retryAfter,
       },
       {
@@ -158,11 +141,7 @@ export async function enforceEnquiryRateLimit(
       },
     );
   } catch {
-    // If the counter cannot be checked, do not
-    // continue issuing uploads or saving enquiries.
-    console.error(
-      "Enquiry rate limiting is unavailable.",
-    );
+    console.error("Enquiry rate limiting is unavailable.");
 
     return NextResponse.json(
       {
