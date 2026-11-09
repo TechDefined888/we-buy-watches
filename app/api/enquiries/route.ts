@@ -117,11 +117,14 @@ function photoTypesMatch(
 }
 
 export async function POST(request: NextRequest) {
-  // Keep production disabled until the remaining
-  // upload-cleanup work and deployment checks are complete.
-  if (process.env.NODE_ENV !== "development") {
-    return new NextResponse(null, { status: 404 });
-  }
+
+const previewEnabled =
+  process.env.VERCEL_ENV === "preview" &&
+  process.env.ENQUIRY_PREVIEW_ENABLED === "true";
+
+if (process.env.NODE_ENV !== "development" && !previewEnabled) {
+  return new NextResponse(null, { status: 404 });
+}
 
   if (
     request.headers.get("origin") !==
