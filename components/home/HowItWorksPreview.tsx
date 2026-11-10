@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const sectionFont = {
   fontFamily: "var(--font-nav, Arial), sans-serif",
@@ -97,14 +100,114 @@ function StepIcon({ type }: { type: IconType }) {
   }
 }
 
+function Chevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-5 w-5"
+    >
+      <path
+        d={direction === "left" ? "m14 6-6 6 6 6" : "m10 6 6 6-6 6"}
+      />
+    </svg>
+  );
+}
+
+const navigationClass = `
+  flex h-11 w-11 shrink-0 items-center justify-center
+  self-center rounded-full
+  border border-[#C8A75E]/50
+  bg-white text-[#30104B]
+  transition-colors hover:bg-[#FAF6ED]
+  focus-visible:outline-2
+  focus-visible:outline-offset-2
+  focus-visible:outline-[#30104B]
+  disabled:cursor-default disabled:opacity-35
+  motion-reduce:transition-none
+  sm:hidden
+`;
+
 export default function HowItWorksPreview() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    function updateControls() {
+      if (!track) return;
+
+      const maximum = Math.max(
+        0,
+        track.scrollWidth - track.clientWidth,
+      );
+
+      setAtStart(track.scrollLeft <= 2);
+      setAtEnd(track.scrollLeft >= maximum - 2);
+    }
+
+    updateControls();
+
+    track.addEventListener("scroll", updateControls, {
+      passive: true,
+    });
+
+    const observer = new ResizeObserver(updateControls);
+    observer.observe(track);
+
+    return () => {
+      track.removeEventListener("scroll", updateControls);
+      observer.disconnect();
+    };
+  }, []);
+
+  function scrollCards(direction: -1 | 1) {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const first = track.children.item(0);
+    const second = track.children.item(1);
+
+    if (!first || !second) return;
+
+    const step =
+      second.getBoundingClientRect().left -
+      first.getBoundingClientRect().left;
+
+    if (step <= 0) return;
+
+    const nextIndex =
+      Math.round(track.scrollLeft / step) + direction;
+
+    const maximum = Math.max(
+      0,
+      track.scrollWidth - track.clientWidth,
+    );
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    track.scrollTo({
+      left: Math.min(maximum, Math.max(0, nextIndex * step)),
+      behavior: reducedMotion ? "instant" : "smooth",
+    });
+  }
+
   return (
     <section
       aria-labelledby="how-it-works-heading"
       className="relative isolate overflow-hidden bg-white py-16 sm:py-20 lg:py-24"
       style={sectionFont}
     >
-      {/* Background details */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-36 top-36 h-72 w-72 rounded-full border border-[#C8A75E]/15"
@@ -115,7 +218,7 @@ export default function HowItWorksPreview() {
         className="pointer-events-none absolute -right-32 bottom-16 h-80 w-80 rounded-full border border-[#C8A75E]/15"
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto min-w-0 max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Section heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#9A7A3B] sm:text-[11px]">
@@ -142,123 +245,189 @@ export default function HowItWorksPreview() {
           />
         </div>
 
-        {/* Process cards */}
-        <div className="mt-12 grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step) => (
-            <Link
-              key={step.icon}
-              href="/how-it-works"
-              aria-label={`Learn more about ${step.title}`}
-              className="
-                group flex min-w-0 flex-col self-stretch
-                overflow-hidden rounded-[18px]
-                border border-[#C8A75E]/30
-                bg-[#FAF6ED]
-                shadow-[0_10px_28px_rgba(73,48,20,0.10)]
-                transition-[border-color,box-shadow] duration-300
-                hover:border-[#C8A75E]/70
-                hover:shadow-[0_14px_34px_rgba(73,48,20,0.16)]
-                focus-visible:outline-2
-                focus-visible:outline-offset-4
-                focus-visible:outline-[#C8A75E]
-                motion-reduce:transition-none
-              "
-            >
-              {/* Fixed image area */}
-              <div
-                className="relative isolate w-full shrink-0 overflow-hidden bg-[#211A26]"
-                style={{ height: 215 }}
+        {/*
+          Mobile: arrows have their own columns.
+          The middle column can shrink without overflowing the page.
+          Tablet/desktop: restore the original grid.
+        */}
+        <div
+          className="
+            mx-auto mt-7 grid w-full max-w-[400px]
+            grid-cols-[44px_minmax(0,1fr)_44px]
+            items-center gap-1
+            sm:mt-12 sm:block sm:max-w-none
+          "
+        >
+          <button
+            type="button"
+            aria-label="Previous process step"
+            aria-controls="how-it-works-cards"
+            disabled={atStart}
+            onClick={() => scrollCards(-1)}
+            className={navigationClass}
+          >
+            <Chevron direction="left" />
+          </button>
+
+          <div
+            id="how-it-works-cards"
+            ref={trackRef}
+            role="region"
+            aria-label="How it works steps"
+            className="
+              grid w-full min-w-0
+              auto-cols-[100%] grid-flow-col grid-rows-1
+              items-stretch gap-4
+              overflow-x-auto overscroll-x-contain
+              snap-x snap-mandatory py-4
+              [scrollbar-width:none]
+              [&::-webkit-scrollbar]:hidden
+              sm:auto-cols-auto sm:grid-flow-row
+              sm:grid-cols-2 sm:grid-rows-none
+              sm:gap-6 sm:overflow-visible
+              sm:overscroll-x-auto sm:snap-none sm:py-0
+              lg:grid-cols-4
+            "
+          >
+            {steps.map((step) => (
+              <Link
+                key={step.icon}
+                href="/how-it-works"
+                aria-label={`Learn more about ${step.title}`}
+                className="
+                  group flex w-full min-w-0
+                  snap-start flex-col self-stretch
+                  overflow-hidden rounded-[18px]
+                  border border-[#C8A75E]/30
+                  bg-[#FAF6ED]
+                  shadow-[0_4px_12px_rgba(73,48,20,0.08)]
+                  transition-[border-color,box-shadow] duration-300
+                  hover:border-[#C8A75E]/70
+                  focus-visible:outline-2
+                  focus-visible:-outline-offset-2
+                  focus-visible:outline-[#C8A75E]
+                  motion-reduce:transition-none
+                  sm:w-auto sm:snap-align-none
+                  sm:shadow-[0_10px_28px_rgba(73,48,20,0.10)]
+                  sm:hover:shadow-[0_14px_34px_rgba(73,48,20,0.16)]
+                  sm:focus-visible:outline-offset-4
+                "
               >
-                <Image
-                  src={step.image}
-                  alt={step.alt}
-                  fill
-                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    maxWidth: "none",
-                    objectFit: "cover",
-                    objectPosition: step.imagePosition,
-                  }}
-                />
+                {/* Full image on mobile, original crop on desktop */}
+                <div className="relative isolate h-[190px] w-full shrink-0 overflow-hidden bg-[#211A26] sm:h-[215px]">
+                  <Image
+                    src={step.image}
+                    alt={step.alt}
+                    fill
+                    sizes="(min-width: 1280px) 286px, (min-width: 1024px) calc((100vw - 136px) / 4), (min-width: 640px) calc((100vw - 72px) / 2), (min-width: 440px) 304px, calc(100vw - 136px)"
+                    className="
+                      object-contain object-center
+                      sm:object-cover
+                      sm:object-[var(--step-position)]
+                    "
+                    style={
+                      {
+                        "--step-position": step.imagePosition,
+                      } as React.CSSProperties
+                    }
+                  />
 
-                {/* Subtle shade behind icon */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(0,0,0,0.22), transparent 55%)",
-                  }}
-                />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(0,0,0,0.22), transparent 55%)",
+                    }}
+                  />
 
-                {/* Step icon */}
-                <span
-                  aria-hidden="true"
-                  className="
-                    absolute left-5 top-4 z-10
-                    flex h-11 w-11 items-center justify-center
-                    rounded-full border border-[#C8A75E]/65
-                    bg-[#FFFAF0] text-[#A77E32]
-                    shadow-[0_4px_12px_rgba(0,0,0,0.15)]
-                    transition-colors duration-300
-                    group-hover:bg-[#C8A75E]
-                    group-hover:text-[#211A26]
-                    motion-reduce:transition-none
-                  "
-                >
-                  <StepIcon type={step.icon} />
-                </span>
-              </div>
-
-              {/* Card content */}
-              <div className="flex flex-1 flex-col px-5 pb-5 pt-6 sm:px-6">
-                <div
-                  aria-hidden="true"
-                  className="mb-3 h-px w-8 shrink-0 bg-[#C8A75E]"
-                />
-
-                <h3
-                  style={sectionFont}
-                  className="m-0 text-[19px] font-medium leading-[1.4] tracking-[-0.025em] text-[#30104B]"
-                >
-                  {step.title}
-                </h3>
-
-                <p className="mb-0 mt-3 text-[13px] font-normal leading-[1.7] text-[#211A26]/75">
-                  {step.text}
-                </p>
-
-                {/* Bottom-aligned arrow */}
-                <div className="mt-auto flex justify-end pt-6">
                   <span
                     aria-hidden="true"
                     className="
-                      flex h-9 w-9 shrink-0
-                      items-center justify-center rounded-full
-                      border border-[#C8A75E] text-[#9A7A3B]
+                      absolute left-3 top-3 z-10
+                      flex h-8 w-8 items-center justify-center
+                      rounded-full border border-[#C8A75E]/65
+                      bg-[#C8A75E] text-[#211A26]
+                      shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                       transition-colors duration-300
+                      [&>svg]:h-[18px] [&>svg]:w-[18px]
+                      sm:left-5 sm:top-4 sm:h-11 sm:w-11
+                      sm:bg-[#FFFAF0] sm:text-[#A77E32]
+                      sm:[&>svg]:h-[23px] sm:[&>svg]:w-[23px]
                       group-hover:bg-[#C8A75E]
                       group-hover:text-[#211A26]
                       motion-reduce:transition-none
                     "
                   >
-                    <span className="transition-transform duration-300 group-hover:translate-x-0.5 motion-reduce:transform-none">
-                      →
-                    </span>
+                    <StepIcon type={step.icon} />
                   </span>
                 </div>
-              </div>
-            </Link>
-          ))}
+
+                {/* Card content */}
+                <div className="flex flex-1 flex-col px-4 pb-4 pt-4 sm:px-6 sm:pb-5 sm:pt-6">
+                  <div
+                    aria-hidden="true"
+                    className="mb-2 h-px w-6 shrink-0 bg-[#C8A75E] sm:mb-3 sm:w-8"
+                  />
+
+                  <h3
+                    style={sectionFont}
+                    className="m-0 text-[16px] font-medium leading-[1.35] tracking-[-0.025em] text-[#30104B] sm:text-[19px] sm:leading-[1.4]"
+                  >
+                    {step.title}
+                  </h3>
+
+                  <p className="mb-0 mt-2 text-[12px] font-normal leading-[1.6] text-[#211A26]/75 sm:mt-3 sm:text-[13px] sm:leading-[1.7]">
+                    {step.text}
+                  </p>
+
+                  <div className="mt-auto flex justify-end pt-4 sm:pt-6">
+                    <span
+                      aria-hidden="true"
+                      className="
+                        flex h-7 w-7 shrink-0
+                        items-center justify-center rounded-full
+                        border border-[#C8A75E]
+                        bg-[#C8A75E] text-sm text-[#211A26]
+                        transition-colors duration-300
+                        sm:h-9 sm:w-9 sm:bg-transparent
+                        sm:text-base sm:text-[#9A7A3B]
+                        group-hover:bg-[#C8A75E]
+                        group-hover:text-[#211A26]
+                        motion-reduce:transition-none
+                      "
+                    >
+                      <span
+                        className="
+                          transition-transform duration-300
+                          group-hover:translate-x-0.5
+                          motion-reduce:transform-none
+                          motion-reduce:transition-none
+                        "
+                      >
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Next process step"
+            aria-controls="how-it-works-cards"
+            disabled={atEnd}
+            onClick={() => scrollCards(1)}
+            className={navigationClass}
+          >
+            <Chevron direction="right" />
+          </button>
         </div>
 
-        {/* Purple CTA button */}
-        <div className="mt-12 flex justify-center">
+        {/* Existing CTA */}
+        <div className="mt-7 flex justify-center sm:mt-12">
           <Link
             href="/how-it-works"
             className="
@@ -267,8 +436,7 @@ export default function HowItWorksPreview() {
               rounded-[6px] border-0
               bg-[#30104B]! px-6 py-3
               text-[14px] font-normal normal-case
-              tracking-normal text-white!
-              no-underline!
+              tracking-normal text-white! no-underline!
               transition-colors duration-300
               hover:bg-[#421765]!
               focus-visible:outline-2
@@ -288,6 +456,7 @@ export default function HowItWorksPreview() {
                 transition-transform duration-300
                 group-hover:translate-x-1
                 motion-reduce:transform-none
+                motion-reduce:transition-none
               "
             >
               →

@@ -131,21 +131,7 @@ export default function TermsPage() {
 
       <div className="bg-[#F7F0E3] px-5 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-3xl">
-          <aside
-            aria-label="Draft terms notice"
-            className="rounded-xl border border-[#C8A75E]/50 bg-white p-5"
-          >
-            <p className="text-sm font-semibold text-[#30104B]">
-              Draft — pending business confirmation
-            </p>
-
-            <p className="mt-2 text-sm leading-7 text-[#211A26]/80">
-              These terms are being prepared for launch. Business
-              details and commercial arrangements still need to
-              be confirmed. Online enquiry submission is not
-              available yet.
-            </p>
-          </aside>
+          
 
           <article className="mt-8 space-y-6">
             {sections.map((section) => (

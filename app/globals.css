@@ -1081,7 +1081,7 @@ img {
   display: flex;
   width: max-content;
   align-items: center;
-  animation: wbwBrandScroll 38s linear infinite;
+  animation: wbwBrandScroll 50s linear infinite;
 }
 
 .wbw-brands-section:hover .wbw-brand-marquee {
@@ -1273,4 +1273,13 @@ img {
   #wbw-navbar.wbw-is-scrolled .wbw-mobile-links {
     max-height: calc(100dvh - 97px);
   }
+}
+/* We Buy Watches navbar */
+#wbw-navbar .wbw-announcement p {
+  font-weight: 700;
+}
+
+#wbw-navbar .wbw-search-field,
+#wbw-navbar .wbw-valuation {
+  border-radius: 9999px;
 }

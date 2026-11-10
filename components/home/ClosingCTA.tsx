@@ -19,8 +19,8 @@ export default function ClosingCTA() {
             className="pointer-events-none absolute inset-0"
           >
             <Image
-              src="/images/closingcta.png"
-              alt=""
+              src="/images/closingcta-1.png"
+              alt="Rose gold watch with a green dial gold WBW logo and brown leather strap against a deep purple background"
               fill
               sizes="(max-width: 1280px) 100vw, 1280px"
               className="translate-x-[80px] object-cover object-[85%_top] sm:translate-x-0 sm:object-[72%_center] lg:object-right"

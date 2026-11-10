@@ -10,7 +10,6 @@ export default function Hero() {
 
   const toggleSound = async () => {
     const video = videoRef.current;
-
     if (!video) return;
 
     if (soundOn) {
@@ -20,7 +19,6 @@ export default function Hero() {
     }
 
     const nextVolume = volume > 0 ? volume : 0.7;
-
     video.volume = nextVolume;
     video.muted = false;
     setVolume(nextVolume);
@@ -38,7 +36,6 @@ export default function Hero() {
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextVolume = Number(event.target.value);
     const video = videoRef.current;
-
     setVolume(nextVolume);
 
     if (!video) return;
@@ -69,7 +66,7 @@ export default function Hero() {
         preload="metadata"
         className="absolute inset-0 h-full w-full object-cover object-[42%_50%] sm:object-center"
       >
-        <source src="/videos/hero-watch.mp4" type="video/mp4" />
+        <source src="/videos/hero-watch1.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
@@ -93,11 +90,11 @@ export default function Hero() {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(0deg, rgba(0,0,0,0.34) 0%, transparent 25%)",
-        }}
+        className="
+          pointer-events-none absolute inset-0
+          bg-[image:linear-gradient(0deg,rgba(0,0,0,0.34)_0%,transparent_25%)]
+          max-sm:bg-[image:radial-gradient(ellipse_max(490px,105%)_76%_at_left_76%,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.78)_65%,rgba(0,0,0,0.59)_82%,transparent_100%),linear-gradient(0deg,rgba(0,0,0,0.34)_0%,transparent_25%)]
+        "
       />
 
       <div
@@ -165,7 +162,7 @@ export default function Hero() {
               className="
                 group inline-flex min-h-11 max-w-full
                 items-center justify-center gap-3
-                rounded-[3px] border border-[#D8BA73]
+                rounded-[9999px] border border-[#D8BA73]
                 bg-[#D8BA73] px-4 py-2
                 text-[9px] font-semibold uppercase
                 tracking-[0.14em] text-[#211A26]!

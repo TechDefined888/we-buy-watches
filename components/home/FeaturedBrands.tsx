@@ -1,105 +1,202 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const sectionFont = {
   fontFamily: "var(--font-nav, Arial), sans-serif",
 };
 
+const photoFolder = "/images/watches/featured";
+
+const photoSizes =
+  "(min-width: 1280px) 296px, " +
+  "(min-width: 640px) calc((100vw - 96px) / 4), " +
+  "calc((100vw - 58px) / 4)";
+
 const brands = [
   {
     name: "Rolex",
     href: "/sell-rolex",
-    image: "/images/brands/rolex.png",
-    logoSize: "max-w-[145px] h-[78px]",
-    logoScale: 1.3,
+    photo: "rolex.png",
+    alt: "Rolex wristwatch",
   },
   {
     name: "Patek Philippe",
     href: "/sell-patek-philippe",
-    image: "/images/brands/patek-philippe.png",
-    logoSize: "max-w-[165px] h-[86px]",
-    logoScale: 1.5,
+    photo: "patek-philippe.png",
+    alt: "Patek Philippe wristwatch",
   },
   {
     name: "Audemars Piguet",
     href: "/sell-audemars-piguet",
-    image: "/images/brands/audemars-piguet.png",
-    logoSize: "max-w-[160px] h-[84px]",
-    logoScale: 1.5,
+    photo: "audemars-piguet.png",
+    alt: "Audemars Piguet wristwatch",
   },
   {
     name: "Richard Mille",
     href: "/sell-richard-mille",
-    image: "/images/brands/richard-mille.png",
-    logoSize: "max-w-[155px] h-[68px]",
-    logoScale: 1.05,
+    photo: "richard-mille.png",
+    alt: "Richard Mille wristwatch",
   },
   {
     name: "Vacheron Constantin",
     href: "/sell-vacheron-constantin",
-    image: "/images/brands/vacheron-constantin.png",
-    logoSize: "max-w-[185px] h-[90px]",
-    logoScale: 1.8,
+    photo: "vacheron-constantin.png",
+    alt: "Vacheron Constantin wristwatch",
   },
   {
     name: "A. Lange & Söhne",
     href: "/sell-a-lange-sohne",
-    image: "/images/brands/a-lange-sohne.png",
-    logoSize: "max-w-[200px] h-[94px]",
-    logoScale: 1.7,
+    photo: "a-lange-sohne.png",
+    alt: "A. Lange & Söhne wristwatch",
   },
   {
     name: "F.P. Journe",
     href: "/sell-fp-journe",
-    image: "/images/brands/fp-journe.png",
-    logoSize: "max-w-[185px] h-[88px]",
-    logoScale: 1.55,
+    photo: "fp-journe.png",
+    alt: "F.P. Journe wristwatch",
   },
   {
     name: "Breguet",
     href: "/sell-breguet",
-    image: "/images/brands/breguet.png",
-    logoSize: "max-w-[195px] h-[90px]",
-    logoScale: 1.65,
+    photo: "breguet.png",
+    alt: "Breguet wristwatch",
   },
   {
     name: "Jaeger-LeCoultre",
     href: "/sell-jaeger-lecoultre",
-    image: "/images/brands/jaeger-lecoultre.png",
-    logoSize: "max-w-[200px] h-[94px]",
-    logoScale: 1.85,
+    photo: "jaeger-lecoultre.png",
+    alt: "Jaeger-LeCoultre wristwatch",
   },
   {
     name: "Cartier",
     href: "/sell-cartier",
-    image: "/images/brands/cartier.png",
-    logoSize: "max-w-[180px] h-[82px]",
-    logoScale: 1.65,
+    photo: "cartier.png",
+    alt: "Cartier wristwatch",
   },
   {
     name: "IWC",
     href: "/sell-iwc",
-    image: "/images/brands/iwc.png",
-    logoSize: "max-w-[165px] h-[78px]",
-    logoScale: 1.5,
+    photo: "iwc.png",
+    alt: "IWC wristwatch",
   },
   {
     name: "Hublot",
     href: "/sell-hublot",
-    image: "/images/brands/hublot.png",
-    logoSize: "max-w-[145px] h-[72px]",
-    logoScale: 1.3,
+    photo: "hublot.png",
+    alt: "Hublot wristwatch",
+  },
+  {
+    name: "Omega",
+    href: "/sell-omega",
+    photo: "omega.png",
+    alt: "Omega wristwatch",
+  },
+  {
+    name: "Tudor",
+    href: "/sell-luxury-watches",
+    photo: "tudor.png",
+    alt: "Tudor wristwatch",
   },
 ];
 
+const arrowClass =
+  "grid size-11 place-items-center rounded-full " +
+  "border border-[#30104B]/20 bg-white text-lg text-[#30104B] " +
+  "transition-colors hover:border-[#C8A75E] " +
+  "focus-visible:outline-2 focus-visible:outline-offset-2 " +
+  "focus-visible:outline-[#30104B] " +
+  "disabled:cursor-default disabled:opacity-40 " +
+  "motion-reduce:transition-none";
+
 export default function FeaturedBrands() {
+  const trackRef = useRef<HTMLUListElement>(null);
+
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const [failedPhotos, setFailedPhotos] = useState<string[]>([]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const updateControls = () => {
+      const maxScroll = Math.max(
+        0,
+        track.scrollWidth - track.clientWidth,
+      );
+
+      setAtStart(track.scrollLeft <= 2);
+      setAtEnd(track.scrollLeft >= maxScroll - 2);
+    };
+
+    updateControls();
+
+    track.addEventListener("scroll", updateControls, {
+      passive: true,
+    });
+
+    const resizeObserver = new ResizeObserver(updateControls);
+    resizeObserver.observe(track);
+
+    return () => {
+      track.removeEventListener("scroll", updateControls);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  function scrollCards(direction: -1 | 1) {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const first = track.children.item(0);
+    const second = track.children.item(1);
+
+    if (!first || !second) return;
+
+    const step =
+      second.getBoundingClientRect().left -
+      first.getBoundingClientRect().left;
+
+    if (step <= 0) return;
+
+    const nextCard =
+      Math.round(track.scrollLeft / step) + direction;
+
+    const maxScroll = Math.max(
+      0,
+      track.scrollWidth - track.clientWidth,
+    );
+
+    const target = Math.min(
+      maxScroll,
+      Math.max(0, nextCard * step),
+    );
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    track.scrollTo({
+      left: target,
+      behavior: reducedMotion ? "instant" : "smooth",
+    });
+  }
+
+  function handlePhotoError(photo: string) {
+    setFailedPhotos((current) =>
+      current.includes(photo) ? current : [...current, photo],
+    );
+  }
+
   return (
     <section
       aria-labelledby="featured-brands-heading"
       className="relative overflow-hidden bg-[#F7F0E3] py-16 sm:py-18 lg:py-20"
       style={sectionFont}
     >
-      {/* Soft background glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -110,7 +207,6 @@ export default function FeaturedBrands() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6">
-        {/* Heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#9A7A3B] sm:text-[11px]">
             Featured Brands
@@ -118,7 +214,6 @@ export default function FeaturedBrands() {
 
           <h2
             id="featured-brands-heading"
-            style={sectionFont}
             className="mt-4 text-3xl font-normal leading-[1.15] tracking-[-0.035em] text-[#211A26] sm:text-4xl lg:text-[44px]"
           >
             Iconic Brands. Exceptional Timepieces.
@@ -130,113 +225,98 @@ export default function FeaturedBrands() {
           </p>
         </div>
 
-        {/* Brand cards */}
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-8 flex justify-end gap-2">
+          <button
+            type="button"
+            aria-label="Previous watch brand"
+            aria-controls="featured-watch-cards"
+            className={arrowClass}
+            disabled={atStart}
+            onClick={() => scrollCards(-1)}
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+
+          <button
+            type="button"
+            aria-label="Next watch brand"
+            aria-controls="featured-watch-cards"
+            className={arrowClass}
+            disabled={atEnd}
+            onClick={() => scrollCards(1)}
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <ul
+          id="featured-watch-cards"
+          ref={trackRef}
+          aria-label="Featured watch brands"
+          className="
+            mt-3 grid w-full min-w-0 list-none grid-flow-col
+            auto-cols-[calc((100%_-_18px)/4)]
+            snap-x snap-mandatory gap-[6px]
+            overflow-x-auto overscroll-x-contain
+            p-0 pb-2
+            sm:auto-cols-[calc((100%_-_48px)/4)]
+            sm:gap-4
+          "
+        >
           {brands.map((brand) => (
-            <Link
+            <li
               key={brand.name}
-              href={brand.href}
-              aria-label={`Explore ${brand.name}`}
-              className="
-                group relative flex h-[96px] min-w-0
-                items-center justify-center overflow-hidden
-                rounded-[10px] border border-[#30104B]/10
-                bg-white/45 px-3
-                shadow-[0_4px_14px_rgba(33,26,38,0.04)]
-                transition-all duration-300
-                hover:-translate-y-[2px]
-                hover:border-[#C8A75E]/80
-                hover:bg-white/80
-                hover:shadow-[0_8px_22px_rgba(33,26,38,0.08)]
-                focus-visible:outline-2
-                focus-visible:outline-offset-4
-                focus-visible:outline-[#30104B]
-                motion-reduce:transform-none
-                motion-reduce:transition-none
-                sm:h-[100px] sm:px-4 lg:h-[104px]
-              "
+              className="min-w-0 snap-start"
             >
-              {/* Hover glow */}
-              <div
-                aria-hidden="true"
+              <Link
+                href={brand.href}
                 className="
-                  pointer-events-none absolute inset-0
-                  opacity-0 transition-opacity duration-300
-                  group-hover:opacity-100
-                  motion-reduce:transition-none
-                "
-                style={{
-                  background:
-                    "radial-gradient(circle at 25% 50%, rgba(200,167,94,0.10), transparent 55%)",
-                }}
-              />
-
-              {/* Brand logo */}
-              <div className="pointer-events-none relative flex h-full w-full min-w-0 items-center justify-center">
-                <div
-                  className={`
-                    relative w-full
-                    transition-transform duration-300
-                    group-hover:scale-[1.03]
-                    motion-reduce:transform-none
-                    motion-reduce:transition-none
-                    ${brand.logoSize}
-                  `}
-                >
-                  <Image
-                    src={brand.image}
-                    alt={`${brand.name} logo`}
-                    fill
-                    sizes="(max-width: 639px) 60vw, 360px"
-                    className="object-contain"
-                    style={{
-                      transform: `scale(${brand.logoScale})`,
-                      transformOrigin: "center",
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Hover arrow */}
-              <span
-                aria-hidden="true"
-                className="
-                  absolute right-3 top-1/2 z-10
-                  flex h-7 w-7
-                  -translate-y-1/2 translate-x-2
-                  items-center justify-center rounded-full
-                  bg-[#C8A75E] text-xs text-[#211A26]
-                  opacity-0
-                  shadow-[0_4px_12px_rgba(200,167,94,0.25)]
-                  transition-all duration-300
-                  group-hover:translate-x-0
-                  group-hover:opacity-100
-                  group-focus-visible:translate-x-0
-                  group-focus-visible:opacity-100
+                  group flex h-full min-w-0 flex-col
+                  overflow-hidden rounded-lg
+                  border border-[#30104B]/15
+                  bg-white text-[#30104B] no-underline
+                  transition-colors hover:border-[#C8A75E]
+                  focus-visible:outline-2
+                  focus-visible:-outline-offset-2
+                  focus-visible:outline-[#C8A75E]
                   motion-reduce:transition-none
                 "
               >
-                →
-              </span>
+                <div className="relative aspect-[4/5] w-full bg-[#30104B]">
+                  {!failedPhotos.includes(brand.photo) ? (
+                    <Image
+                      src={`${photoFolder}/${brand.photo}`}
+                      alt={brand.alt}
+                      fill
+                      sizes={photoSizes}
+                      className="object-contain"
+                      onError={() => handlePhotoError(brand.photo)}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 grid place-items-center bg-[#F7F0E3] p-1">
+                      <span className="text-center text-[10px] leading-tight text-[#211A26]/60 sm:text-xs">
+                        Image unavailable
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-              {/* Bottom gold line */}
-              <span
-                aria-hidden="true"
-                className="
-                  absolute bottom-0 left-1/2
-                  h-[2px] w-0 -translate-x-1/2
-                  bg-[#C8A75E]
-                  transition-all duration-300
-                  group-hover:w-[55%]
-                  group-focus-visible:w-[55%]
-                  motion-reduce:transition-none
-                "
-              />
-            </Link>
+                <span
+                  className="
+                    grid min-h-14 flex-1 place-items-center
+                    px-0.5 py-2 text-center
+                    text-[11px] font-semibold leading-tight
+                    [overflow-wrap:anywhere]
+                    sm:min-h-16 sm:px-3 sm:py-3 sm:text-sm
+                  "
+                >
+                  {brand.name}
+                </span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Explore all brands button */}
         <div className="mt-9 flex justify-center">
           <Link
             href="/brands"
@@ -246,8 +326,7 @@ export default function FeaturedBrands() {
               rounded-[6px] border-0
               bg-[#30104B]! px-6 py-3
               text-[14px] font-normal normal-case
-              tracking-normal text-white!
-              no-underline!
+              tracking-normal text-white! no-underline!
               transition-colors duration-300
               hover:bg-[#421765]!
               focus-visible:outline-2
@@ -267,6 +346,7 @@ export default function FeaturedBrands() {
                 transition-transform duration-300
                 group-hover:translate-x-1
                 motion-reduce:transform-none
+                motion-reduce:transition-none
               "
             >
               →

@@ -1,73 +1,44 @@
 import Image from "next/image";
 
 const brands = [
-  {
-    name: "Rolex",
-    logo: "/images/brand/rolex.png",
-  },
-  {
-    name: "Patek Philippe",
-    logo: "/images/brand/patek-philippe.png",
-  },
-  {
-    name: "Audemars Piguet",
-    logo: "/images/brand/audemars-piguet.png",
-  },
-  {
-    name: "Omega",
-    logo: "/images/brand/omega.png",
-  },
-  {
-    name: "Cartier",
-    logo: "/images/brand/cartier.png",
-  },
-  {
-    name: "Richard Mille",
-    logo: "/images/brand/richard-mille.png",
-  },
-  {
-    name: "Tudor",
-    logo: "/images/brand/tudor.png",
-  },
+  { name: "Rolex", logo: "/images/brands/rolex.png", width: 70, height: 70 },
+  { name: "Patek Philippe", logo: "/images/brands/patek-philippe.png", width: 82, height: 82 },
+  { name: "Audemars Piguet", logo: "/images/brands/audemars-piguet.png", width: 83, height: 83 },
+  { name: "Cartier", logo: "/images/brands/cartier.png", width: 92, height: 92 },
+  { name: "Richard Mille", logo: "/images/brands/richard-mille.png", width: 144, height: 72 },
+  { name: "Vacheron Constantin", logo: "/images/brands/vacheron-constantin.png", width: 102, height: 102 },
+  { name: "A. Lange & Söhne", logo: "/images/brands/a-lange-sohne.png", width: 114, height: 114 },
+  { name: "F.P. Journe", logo: "/images/brands/fp-journe.png", width: 102, height: 102 },
+  { name: "Breguet", logo: "/images/brands/breguet.png", width: 118, height: 118 },
+  { name: "Jaeger-LeCoultre", logo: "/images/brands/jaeger-lecoultre.png", width: 112, height: 112 },
+  { name: "IWC", logo: "/images/brands/iwc.png", width: 85, height: 85 },
+  { name: "Hublot", logo: "/images/brands/hublot.png", width: 68, height: 68 },
 ];
 
-function BrandGroup({
-  duplicate = false,
-}: {
-  duplicate?: boolean;
-}) {
+function BrandGroup({ duplicate = false }: { duplicate?: boolean }) {
   return (
-    <div
-      className="wbw-brand-group"
-      aria-hidden={duplicate ? true : undefined}
-    >
+    <div className="wbw-brand-group" aria-hidden={duplicate || undefined}>
       {brands.map((brand) => (
         <div key={brand.name} className="wbw-brand-item">
           <div
             className="wbw-brand-image"
             style={{
-              position: "relative",
-              width: "100%",
-              height: "48px",
-              overflow: "hidden",
+              width: brand.width,
+              maxWidth: "100%",
+              height: brand.height,
             }}
           >
             <Image
               src={brand.logo}
               alt={duplicate ? "" : `${brand.name} logo`}
               fill
-              sizes="(max-width: 639px) 122px, (max-width: 767px) 162px, 186px"
+              sizes={`(max-width: 639px) ${Math.min(brand.width, 122)}px, ${brand.width}px`}
               className="wbw-brand-logo"
-              style={{
-                objectFit: "contain",
-              }}
+              style={{ objectFit: "contain" }}
             />
           </div>
 
-          <span
-            className="wbw-brand-divider"
-            aria-hidden="true"
-          />
+          <span className="wbw-brand-divider" aria-hidden="true" />
         </div>
       ))}
     </div>
@@ -80,11 +51,6 @@ export default function BrandSection() {
       id="brands"
       aria-label="Luxury watch brands"
       className="wbw-brands-section"
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "#ffffff",
-      }}
     >
       <div className="wbw-brand-marquee">
         <BrandGroup />
