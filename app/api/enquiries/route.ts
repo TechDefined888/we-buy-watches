@@ -12,13 +12,9 @@ import {
   REFERRAL_CONSENT_TEXT,
 } from "@/lib/valuation/config";
 
-import {
-  enforceEnquiryRateLimit,
-} from "@/lib/valuation/rate-limit";
-
-import {
-  enquirySubmissionSchema,
-} from "@/lib/valuation/schema";
+import { enforceEnquiryRateLimit } from "@/lib/valuation/rate-limit";
+import { enquirySubmissionSchema } from "@/lib/valuation/schema";
+import { sendEnquiryEmail } from "@/lib/valuation/send-enquiry-email";
 
 import {
   hashEnquiryPayload,
@@ -60,7 +56,6 @@ async function readBoundedBody(
 
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
-
   let totalBytes = 0;
 
   try {
@@ -96,10 +91,7 @@ async function readBoundedBody(
 }
 
 function isHeifType(type: string): boolean {
-  return (
-    type === "image/heic" ||
-    type === "image/heif"
-  );
+  return type === "image/heic" || type === "image/heif";
 }
 
 function photoTypesMatch(
@@ -110,14 +102,11 @@ function photoTypesMatch(
     return true;
   }
 
-  return (
-    isHeifType(declaredType) &&
-    isHeifType(detectedType)
-  );
+  return isHeifType(declaredType) && isHeifType(detectedType);
 }
 
 export async function POST(request: NextRequest) {
-
+  // Preserve the existing deployment access controls.
   const vercelPreviewEnabled =
     process.env.VERCEL_ENV === "preview" &&
     process.env.ENQUIRY_PREVIEW_ENABLED === "true";
@@ -134,8 +123,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (
-    request.headers.get("origin") !==
-    request.nextUrl.origin
+    request.headers.get("origin") !== request.nextUrl.origin
   ) {
     return json(
       {
@@ -146,12 +134,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Check the final-submission request limit.
-  const rateLimitResponse =
-    await enforceEnquiryRateLimit(
-      request,
-      "submit",
-    );
+  const rateLimitResponse = await enforceEnquiryRateLimit(
+    request,
+    "submit",
+  );
 
   if (rateLimitResponse) {
     return rateLimitResponse;
@@ -272,10 +258,9 @@ export async function POST(request: NextRequest) {
       .maybeSingle();
 
     if (existingError) {
-      console.error(
-        "Could not check an existing submission.",
-        { code: existingError.code },
-      );
+      console.error("Could not check an existing submission.", {
+        code: existingError.code,
+      });
 
       return json(
         {
@@ -288,10 +273,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (existing) {
-      if (
-        existing.submission_payload_hash !==
-        payloadHash
-      ) {
+      if (existing.submission_payload_hash !== payloadHash) {
         return json(
           {
             ok: false,
@@ -303,6 +285,7 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // Do not send another notification for a recovered submission.
       return json(
         {
           ok: true,
@@ -315,7 +298,7 @@ export async function POST(request: NextRequest) {
 
     const verifiedPhotos: VerifiedPhotoRecord[] = [];
 
-    // Check one photograph at a time.
+    // Validate uploaded bytes one photograph at a time.
     for (const photo of session.photos) {
       const {
         data: uploadedFile,
@@ -358,24 +341,20 @@ export async function POST(request: NextRequest) {
         await uploadedFile.arrayBuffer(),
       );
 
-      const detectedType = await fileTypeFromBuffer(
-        bytes,
-      ).catch(() => undefined);
+      const detectedType = await fileTypeFromBuffer(bytes).catch(
+        () => undefined,
+      );
 
       const allowedType =
         detectedType !== undefined &&
         ALLOWED_PHOTO_TYPES.some(
-          (allowed) =>
-            allowed === detectedType.mime,
+          (allowed) => allowed === detectedType.mime,
         );
 
       if (
         !detectedType ||
         !allowedType ||
-        !photoTypesMatch(
-          photo.type,
-          detectedType.mime,
-        )
+        !photoTypesMatch(photo.type, detectedType.mime)
       ) {
         return json(
           {
@@ -400,29 +379,19 @@ export async function POST(request: NextRequest) {
     const {
       data: enquiryId,
       error: saveError,
-    } = await supabase.rpc(
-      "finalize_watch_enquiry",
-      {
-        p_submission: submission,
-        p_photos: verifiedPhotos,
-        p_payload_hash: payloadHash,
-        p_consent_text: REFERRAL_CONSENT_TEXT,
-        p_consented_at: session.consentedAt,
-      },
-    );
+    } = await supabase.rpc("finalize_watch_enquiry", {
+      p_submission: submission,
+      p_photos: verifiedPhotos,
+      p_payload_hash: payloadHash,
+      p_consent_text: REFERRAL_CONSENT_TEXT,
+      p_consented_at: session.consentedAt,
+    });
 
-    if (
-      saveError ||
-      typeof enquiryId !== "string"
-    ) {
+    if (saveError || typeof enquiryId !== "string") {
       // Never log seller details, credentials or tokens.
-      console.error(
-        "Could not finalize the enquiry.",
-        {
-          code:
-            saveError?.code ?? "INVALID_RESULT",
-        },
-      );
+      console.error("Could not finalize the enquiry.", {
+        code: saveError?.code ?? "INVALID_RESULT",
+      });
 
       return json(
         {
@@ -434,6 +403,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // The enquiry is saved. Notification failures must not undo success.
+    try {
+      await sendEnquiryEmail({
+        enquiryId,
+        submittedAt: session.consentedAt,
+        submission,
+      });
+    } catch {
+      console.error("Saved enquiry notification failed.", {
+        enquiryId,
+      });
+    }
+
     return json(
       {
         ok: true,
@@ -443,9 +425,7 @@ export async function POST(request: NextRequest) {
       201,
     );
   } catch {
-    console.error(
-      "The enquiry submission could not complete.",
-    );
+    console.error("The enquiry submission could not complete.");
 
     return json(
       {
