@@ -22,32 +22,32 @@ type ProcessStep = {
 const steps: ProcessStep[] = [
   {
     icon: "watch",
-    title: "Tell us about your watch",
-    text: "Share your watch details, clear photographs and preferred contact details to begin your enquiry.",
+    title: "Submit Your Watch",
+    text: "Tell us about your timepiece and provide relevant photographs and details.",
     image: "/images/process/step-1.jpg",
     alt: "Luxury wristwatch",
     imagePosition: "center 60%",
   },
   {
     icon: "document",
-    title: "Review and referral",
-    text: "We review your enquiry and, with your consent, refer suitable enquiries to our participating dealer.",
+    title: "Personal Consultation",
+    text: "Our concierge reviews your enquiry and discusses your requirements.",
     image: "/images/process/step-2.jpg",
     alt: "Documents and fountain pen",
     imagePosition: "center 65%",
   },
   {
     icon: "tag",
-    title: "Explore a potential offer",
-    text: "The dealer may request further details or an inspection before deciding whether to make an offer. An offer is not guaranteed.",
+    title: "Inspection Arrangements",
+    text: "We coordinate a suitable inspection appointment, either at participating premises or at an agreed location where available.",
     image: "/images/process/step-3.jpg",
     alt: "Luxury watch in presentation box",
     imagePosition: "center 65%",
   },
   {
     icon: "check",
-    title: "The decision is yours",
-    text: "You decide whether to accept an offer, with no obligation to sell. Any purchase arrangements are agreed directly with the dealer.",
+    title: "Your Selling Opportunity",
+    text: "The independent purchasing professional discusses the purchase offer and transaction directly with you.",
     image: "/images/process/step-4.jpg",
     alt: "Professional handshake",
     imagePosition: "center 65%",
@@ -113,7 +113,11 @@ function Chevron({ direction }: { direction: "left" | "right" }) {
       className="h-5 w-5"
     >
       <path
-        d={direction === "left" ? "m14 6-6 6 6 6" : "m10 6 6 6-6 6"}
+        d={
+          direction === "left"
+            ? "m14 6-6 6 6 6"
+            : "m10 6 6 6-6 6"
+        }
       />
     </svg>
   );
@@ -142,9 +146,7 @@ export default function HowItWorksPreview() {
     const track = trackRef.current;
     if (!track) return;
 
-    function updateControls() {
-      if (!track) return;
-
+    const updateControls = () => {
       const maximum = Math.max(
         0,
         track.scrollWidth - track.clientWidth,
@@ -152,7 +154,7 @@ export default function HowItWorksPreview() {
 
       setAtStart(track.scrollLeft <= 2);
       setAtEnd(track.scrollLeft >= maximum - 2);
-    }
+    };
 
     updateControls();
 
@@ -219,7 +221,6 @@ export default function HowItWorksPreview() {
       />
 
       <div className="relative z-10 mx-auto min-w-0 max-w-7xl px-5 sm:px-6 lg:px-8">
-        {/* Section heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#9A7A3B] sm:text-[11px]">
             How It Works
@@ -234,9 +235,9 @@ export default function HowItWorksPreview() {
           </h2>
 
           <p className="mx-auto mt-5 max-w-[580px] text-[13px] leading-[1.9] tracking-[0.01em] text-[#211A26]/70 sm:text-[14px]">
-            Share your watch details, explore a potential offer from
-            our participating dealer and decide whether selling is
-            right for you.
+            Share your watch details and let our concierge guide you
+            through a private consultation, inspection arrangements
+            and your selling opportunity.
           </p>
 
           <div
@@ -245,15 +246,10 @@ export default function HowItWorksPreview() {
           />
         </div>
 
-        {/*
-          Mobile: arrows have their own columns.
-          The middle column can shrink without overflowing the page.
-          Tablet/desktop: restore the original grid.
-        */}
         <div
           className="
             mx-auto mt-7 grid w-full max-w-[400px]
-            grid-cols-[44px_minmax(0,1fr)_44px]
+            grid-cols-[44px_minmax(0,_1fr)_44px]
             items-center gap-1
             sm:mt-12 sm:block sm:max-w-none
           "
@@ -313,23 +309,16 @@ export default function HowItWorksPreview() {
                   sm:focus-visible:outline-offset-4
                 "
               >
-                {/* Full image on mobile, original crop on desktop */}
-                <div className="relative isolate h-[190px] w-full shrink-0 overflow-hidden bg-[#211A26] sm:h-[215px]">
+                <div className="relative isolate h-[240px] w-full shrink-0 overflow-hidden bg-[#211A26] sm:h-[215px]">
                   <Image
                     src={step.image}
                     alt={step.alt}
                     fill
                     sizes="(min-width: 1280px) 286px, (min-width: 1024px) calc((100vw - 136px) / 4), (min-width: 640px) calc((100vw - 72px) / 2), (min-width: 440px) 304px, calc(100vw - 136px)"
-                    className="
-                      object-contain object-center
-                      sm:object-cover
-                      sm:object-[var(--step-position)]
-                    "
-                    style={
-                      {
-                        "--step-position": step.imagePosition,
-                      } as React.CSSProperties
-                    }
+                    className="object-cover"
+                    style={{
+                      objectPosition: step.imagePosition,
+                    }}
                   />
 
                   <div
@@ -363,7 +352,6 @@ export default function HowItWorksPreview() {
                   </span>
                 </div>
 
-                {/* Card content */}
                 <div className="flex flex-1 flex-col px-4 pb-4 pt-4 sm:px-6 sm:pb-5 sm:pt-6">
                   <div
                     aria-hidden="true"
@@ -426,7 +414,6 @@ export default function HowItWorksPreview() {
           </button>
         </div>
 
-        {/* Existing CTA */}
         <div className="mt-7 flex justify-center sm:mt-12">
           <Link
             href="/how-it-works"

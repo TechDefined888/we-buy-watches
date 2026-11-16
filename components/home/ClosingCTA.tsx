@@ -20,7 +20,7 @@ export default function ClosingCTA() {
           >
             <Image
               src="/images/closingcta-1.png"
-              alt="Rose gold watch with a green dial gold WBW logo and brown leather strap against a deep purple background"
+              alt="gold watch with a green dial gold WBW logo and brown leather strap against a deep purple background"
               fill
               sizes="(max-width: 1280px) 100vw, 1280px"
               className="translate-x-[80px] object-cover object-[85%_top] sm:translate-x-0 sm:object-[72%_center] lg:object-right"
@@ -73,7 +73,7 @@ export default function ClosingCTA() {
                 />
 
                 <p className="m-0 text-[8px] font-medium uppercase leading-4 tracking-[0.24em] text-[#E1C17E] sm:text-[10px] sm:leading-5 sm:tracking-[0.3em]">
-                  A Considered Next Chapter
+                  Private Concierge
                 </p>
               </div>
 
@@ -82,15 +82,15 @@ export default function ClosingCTA() {
                 style={sectionFont}
                 className="mt-2 text-[clamp(20px,5.5vw,26px)] font-normal leading-[1.12] tracking-[-0.045em] text-[#F7F0E3] [text-shadow:0_2px_12px_rgba(36,10,55,0.95)] sm:mt-6 sm:text-[46px] sm:[text-shadow:none] lg:text-[52px]"
               >
-                Exceptional watches.
+                Considering selling{" "}
                 <span className="mt-1 block text-[#E1C17E] sm:mt-2">
-                  New possibilities.
+                  your watch?
                 </span>
               </h2>
 
               <p className="mt-2.5 max-w-[250px] text-[11px] font-normal leading-[1.65] text-[#F7F0E3]/90 [text-shadow:0_2px_8px_rgba(36,10,55,0.95)] sm:mt-6 sm:max-w-[380px] sm:text-sm sm:leading-[1.9] sm:text-[#F7F0E3]/75 sm:[text-shadow:none]">
-                Ready to part with your timepiece? Start a private enquiry and
-                explore your selling options.
+                Speak with our concierge team for a discreet,
+                personalised experience.
               </p>
 
               <Link

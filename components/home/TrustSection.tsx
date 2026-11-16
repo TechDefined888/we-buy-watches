@@ -2,50 +2,51 @@ const sectionFont = {
   fontFamily: "var(--font-nav, Arial), sans-serif",
 };
 
-const trustItems = [
+const services = [
   {
-    title: "Straightforward Enquiries",
-    text: "A simple online process designed around the information that matters.",
+    title: "Private Watch Consultations",
+    text: "A personalised consultation to discuss your watch, its condition, history and selling expectations.",
   },
   {
-    title: "Secure Photo Submission",
-    text: "Submit relevant watch photographs together with your enquiry.",
+    title: "Watch Selling Assistance",
+    text: "Dedicated assistance throughout the process of preparing and arranging your watch for sale.",
   },
   {
-    title: "Transparent Handling",
-    text: "Suitable enquiries are reviewed before referral to a participating buyer.",
+    title: "Private Inspections",
+    text: "Inspection appointments coordinated around your convenience, with participating watch professionals.",
   },
   {
-    title: "No Obligation",
-    text: "Submitting an enquiry does not commit you to accepting an offer.",
+    title: "Concierge Support",
+    text: "A dedicated point of contact to guide you through enquiries, appointment arrangements and the selling process.",
   },
 ];
 
 export default function TrustSection() {
   return (
     <section
-      aria-labelledby="trust-section-heading"
+      id="our-services"
+      aria-labelledby="services-section-heading"
       className="bg-[#30104B] py-16 text-[#F7F0E3] sm:py-20 lg:py-24"
       style={sectionFont}
     >
       <div className="mx-auto max-w-7xl px-6">
-        {/* Centered heading */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[10px] font-medium uppercase leading-5 tracking-[0.3em] text-[#C8A75E] sm:text-[11px]">
-            Why We Buy Watches
+            Our Services
           </p>
 
           <h2
-            id="trust-section-heading"
+            id="services-section-heading"
             style={sectionFont}
             className="mt-4 text-3xl font-normal leading-[1.15] tracking-[-0.035em] text-[#F7F0E3] sm:text-4xl lg:text-[44px]"
           >
-            A Refined Way to Explore Your Selling Options.
+            A Personal Approach to Selling Your Watch.
           </h2>
 
           <p className="mx-auto mt-5 max-w-[580px] text-[13px] font-normal leading-[1.9] tracking-[0.01em] text-[#F7F0E3]/65 sm:text-[14px]">
-            Created for owners of desirable, high-value luxury watches
-            who want a straightforward and discreet enquiry process.
+            Private consultations, inspection arrangements and
+            personalised support throughout your watch selling
+            experience.
           </p>
 
           <div
@@ -54,12 +55,11 @@ export default function TrustSection() {
           />
         </div>
 
-        {/* Trust cards */}
         <div className="mt-12 grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
-          {trustItems.map((item) => (
+          {services.map((service) => (
             <div
-              key={item.title}
-              className="bg-[#351452] p-8 transition-colors duration-300 hover:bg-[#3d195c]"
+              key={service.title}
+              className="bg-[#351452] p-8 transition-colors duration-300 hover:bg-[#3d195c] motion-reduce:transition-none"
             >
               <div
                 aria-hidden="true"
@@ -70,11 +70,11 @@ export default function TrustSection() {
                 style={sectionFont}
                 className="text-[19px] font-medium leading-[1.4] tracking-[-0.025em] text-[#F7F0E3]"
               >
-                {item.title}
+                {service.title}
               </h3>
 
               <p className="mt-4 text-[13px] font-normal leading-[1.9] tracking-[0.01em] text-[#F7F0E3]/65 sm:text-[14px]">
-                {item.text}
+                {service.text}
               </p>
             </div>
           ))}

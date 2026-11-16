@@ -19,6 +19,7 @@ export default function Hero() {
     }
 
     const nextVolume = volume > 0 ? volume : 0.7;
+
     video.volume = nextVolume;
     video.muted = false;
     setVolume(nextVolume);
@@ -33,9 +34,12 @@ export default function Hero() {
     }
   };
 
-  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleVolumeChange = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
     const nextVolume = Number(event.target.value);
     const video = videoRef.current;
+
     setVolume(nextVolume);
 
     if (!video) return;
@@ -111,6 +115,7 @@ export default function Hero() {
               aria-hidden="true"
               className="h-px w-8 shrink-0 bg-[#C8A75E]/70"
             />
+
             <p className="m-0 text-[9px] font-medium uppercase leading-5 tracking-[0.3em] text-[#D8BA73] sm:text-[10px]">
               WE BUY WATCHES
             </p>
@@ -128,9 +133,9 @@ export default function Hero() {
               sm:mt-7 sm:text-[clamp(2rem,5vw,4.5rem)]
             "
           >
-            Looking to Sell
+            Your Watch.
             <span className="mt-1 block text-[#D8BA73] sm:mt-2">
-              Your Luxury Watch?
+              Our Expertise.
             </span>
           </h1>
 
@@ -141,10 +146,8 @@ export default function Hero() {
               sm:mt-7 sm:text-[14px] sm:leading-[1.9]
             "
           >
-            From sought-after Rolex references to exceptional collector
-            timepieces, tell us about your watch and connect with our
-            participating Australian luxury watch buyer to explore a
-            potential offer.
+            A private watch concierge dedicated to making the selling
+            experience straightforward, discreet and personalised.
           </p>
 
           <p className="mt-2 max-w-[480px] text-xs leading-5 text-white/80 sm:mt-4 sm:leading-6">
@@ -174,6 +177,7 @@ export default function Hero() {
               "
             >
               <span>REQUEST A PRIVATE VALUATION</span>
+
               <span
                 aria-hidden="true"
                 className="shrink-0 text-lg font-normal leading-none transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
@@ -200,9 +204,7 @@ export default function Hero() {
               <span
                 aria-hidden="true"
                 className="text-base transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
-              >
-                ↗
-              </span>
+              />
             </Link>
           </div>
         </div>
@@ -260,7 +262,13 @@ export default function Hero() {
 
 function VolumeOnIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M11 5L6 9H2V15H6L11 19V5Z"
         stroke="currentColor"
@@ -286,7 +294,13 @@ function VolumeOnIcon() {
 
 function VolumeOffIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M11 5L6 9H2V15H6L11 19V5Z"
         stroke="currentColor"

@@ -13,7 +13,7 @@ const photoFolder = "/images/watches/featured";
 const photoSizes =
   "(min-width: 1280px) 296px, " +
   "(min-width: 640px) calc((100vw - 96px) / 4), " +
-  "calc((100vw - 58px) / 4)";
+  "calc((100vw - 52px) / 2)";
 
 const brands = [
   {
@@ -255,8 +255,8 @@ export default function FeaturedBrands() {
           aria-label="Featured watch brands"
           className="
             mt-3 grid w-full min-w-0 list-none grid-flow-col
-            auto-cols-[calc((100%_-_18px)/4)]
-            snap-x snap-mandatory gap-[6px]
+            auto-cols-[calc((100%_-_12px)/2)]
+            snap-x snap-mandatory gap-3
             overflow-x-auto overscroll-x-contain
             p-0 pb-2
             sm:auto-cols-[calc((100%_-_48px)/4)]
@@ -282,7 +282,7 @@ export default function FeaturedBrands() {
                   motion-reduce:transition-none
                 "
               >
-                <div className="relative aspect-[4/5] w-full bg-[#30104B]">
+                <div className="relative aspect-[4/5] w-full shrink-0 bg-[#30104B]">
                   {!failedPhotos.includes(brand.photo) ? (
                     <Image
                       src={`${photoFolder}/${brand.photo}`}
@@ -293,8 +293,8 @@ export default function FeaturedBrands() {
                       onError={() => handlePhotoError(brand.photo)}
                     />
                   ) : (
-                    <div className="absolute inset-0 grid place-items-center bg-[#F7F0E3] p-1">
-                      <span className="text-center text-[10px] leading-tight text-[#211A26]/60 sm:text-xs">
+                    <div className="absolute inset-0 grid place-items-center bg-[#F7F0E3] p-2">
+                      <span className="text-center text-xs leading-tight text-[#211A26]/60">
                         Image unavailable
                       </span>
                     </div>
@@ -303,11 +303,11 @@ export default function FeaturedBrands() {
 
                 <span
                   className="
-                    grid min-h-14 flex-1 place-items-center
-                    px-0.5 py-2 text-center
-                    text-[11px] font-semibold leading-tight
+                    grid min-h-16 flex-1 place-items-center
+                    px-2 py-3 text-center
+                    text-[13px] font-semibold leading-tight
                     [overflow-wrap:anywhere]
-                    sm:min-h-16 sm:px-3 sm:py-3 sm:text-sm
+                    sm:px-3 sm:text-sm
                   "
                 >
                   {brand.name}
