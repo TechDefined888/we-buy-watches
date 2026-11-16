@@ -1,3 +1,4 @@
+
 import { bindings, defineConfig, defineWorker } from "cf/config";
 
 export default defineConfig({
@@ -8,10 +9,15 @@ export default defineConfig({
     assets: {
       htmlHandling: "none",
       notFoundHandling: "none",
-      runWorkerFirst: ["/*", "!/_next/static/*", "!/*/_next/static/*"],
+      runWorkerFirst: [
+        "/*",
+        "!/_next/static/*",
+        "!/*/_next/static/*",
+      ],
     },
     env: {
       ASSETS: bindings.assets(),
+      VINEXT_KV_CACHE: bindings.kv(),
     },
   }),
 });
