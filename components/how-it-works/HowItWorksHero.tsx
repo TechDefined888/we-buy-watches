@@ -38,7 +38,7 @@ export default function HowItWorksHero() {
             <li>
               <Link
                 href="/"
-                className="rounded text-[#F7F0E3]/80! transition-colors hover:text-[#E1C17E]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C8A75E]"
+                className="rounded text-[#F7F0E3]/80! transition-colors hover:text-[#E1C17E]! focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C8A75E] motion-reduce:transition-none"
               >
                 Home
               </Link>
@@ -47,7 +47,10 @@ export default function HowItWorksHero() {
             <li aria-hidden="true">/</li>
 
             <li>
-              <span aria-current="page" className="text-[#F7F0E3]/80">
+              <span
+                aria-current="page"
+                className="text-[#F7F0E3]/80"
+              >
                 Our Process
               </span>
             </li>
@@ -67,7 +70,7 @@ export default function HowItWorksHero() {
               textShadow: "0 2px 16px rgba(0,0,0,0.2)",
             }}
           >
-            A Clear Path to
+            A Clear Path to{" "}
             <span className="mt-2 block text-[#E1C17E]">
               Your Next Chapter.
             </span>
@@ -79,9 +82,12 @@ export default function HowItWorksHero() {
           />
 
           <p className="mx-auto mb-0 mt-6 max-w-2xl text-sm leading-7 text-[#F7F0E3]/80 sm:text-[15px]">
-            Considering selling a luxury watch in Australia? Understand how your
-            enquiry is reviewed and how our participating dealer may help you
-            explore a potential sale.
+            Considering selling a luxury watch in Australia? Our
+            private concierge guides you through submitting your
+            watch details, a personal consultation and inspection
+            arrangements. Any purchase offer and transaction are
+            discussed directly with the independent purchasing
+            professional.
           </p>
         </div>
       </div>

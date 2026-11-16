@@ -1,7 +1,7 @@
 export default function SellerDecision() {
   return (
     <section
-      aria-labelledby="referral-heading"
+      aria-labelledby="seller-decision-heading"
       className="bg-[#30104B] px-5 py-14 text-[#F7F0E3] sm:px-6 sm:py-16"
     >
       <div className="mx-auto max-w-3xl text-center">
@@ -10,7 +10,7 @@ export default function SellerDecision() {
         </p>
 
         <h2
-          id="referral-heading"
+          id="seller-decision-heading"
           className="mt-4 text-2xl font-normal leading-tight tracking-[-0.025em] sm:text-3xl"
           style={{ fontFamily: "inherit" }}
         >
@@ -18,17 +18,21 @@ export default function SellerDecision() {
         </h2>
 
         <p className="mt-5 text-sm leading-7 text-[#F7F0E3]/80">
-          We review enquiries and, with your consent, refer suitable
-          enquiries to our participating dealer. The dealer
-          independently assesses your watch and decides whether to
-          make an offer.
+          Our concierge reviews your enquiry, discusses your
+          requirements and coordinates suitable inspection
+          arrangements. With your consent, we share the relevant
+          enquiry details with participating watch professionals.
+          The independent purchasing professional assesses your
+          watch and decides whether to make an offer.
         </p>
 
         <p className="mt-4 text-sm leading-7 text-[#F7F0E3]/80">
-          You are under no obligation to accept an offer. If you
-          choose to proceed, any negotiations, inspection, delivery,
-          payment and purchase arrangements are agreed directly
-          between you and the dealer.
+          You are under no obligation to accept an offer. Our
+          concierge supports you with appointment arrangements
+          and communication throughout the process. If you choose
+          to proceed, the purchase terms, delivery and payment
+          arrangements are agreed directly between you and the
+          independent buyer.
         </p>
 
         <p className="mt-4 text-sm leading-7 text-[#F7F0E3]/80">

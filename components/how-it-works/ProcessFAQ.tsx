@@ -2,12 +2,12 @@ const questions = [
   {
     question: "Does We Buy Watches purchase my watch?",
     answer:
-      "No. We Buy Watches is an independent referral platform. We do not buy, own, authenticate, take possession of or resell watches. The participating dealer independently handles assessments, offers, negotiations and purchases.",
+      "No. We Buy Watches provides a private watch concierge service, supporting you with enquiries, personal consultations and inspection arrangements. We do not buy, own, authenticate, take possession of or resell watches. The independent purchasing professional handles watch assessments, purchase offers, negotiations and transactions.",
   },
   {
     question: "What happens after I submit an enquiry?",
     answer:
-      "We review your enquiry for suitability. With your consent, suitable enquiries are referred to our participating dealer. The dealer may contact you for further information or to discuss an inspection. Not every enquiry will qualify for referral.",
+      "Our concierge reviews your enquiry and discusses your watch and selling requirements with you. Where suitable, we coordinate an inspection at participating premises or an agreed location where available. Relevant enquiry details are shared with participating watch professionals only with your consent. Further assessment and inspection arrangements depend on suitability and availability.",
   },
   {
     question: "What information should I prepare?",
@@ -17,22 +17,22 @@ const questions = [
   {
     question: "Will I receive an immediate valuation or a guaranteed offer?",
     answer:
-      "No. The enquiry form does not provide an instant valuation. The participating dealer may need further information or an inspection before deciding whether to make an offer. A valuation, offer, purchase or particular price is not guaranteed.",
+      "No. The enquiry form does not provide an instant valuation. The independent purchasing professional may need further information or an inspection before deciding whether to make an offer. A valuation, offer, purchase or particular price is not guaranteed.",
   },
   {
     question: "Do I have to accept an offer?",
     answer:
-      "No. Submitting an enquiry does not commit you to selling your watch. If the dealer makes an offer, you decide whether to accept or decline it.",
+      "No. Submitting an enquiry or speaking with our concierge does not commit you to selling your watch. If an independent purchasing professional makes an offer, you decide whether to accept or decline it.",
   },
   {
     question: "Who receives my enquiry details?",
     answer:
-      "We review the information you submit. With your referral consent, suitable enquiries are shared with our participating dealer, including your contact details, watch information and photographs, so the dealer can assess your watch and contact you about a potential offer.",
+      "Our concierge reviews the information you submit. With your consent, we share relevant contact details, watch information and photographs with participating watch professionals to arrange an assessment or inspection and discuss a potential purchase. Further information about how your personal information is handled is available in our Privacy Policy.",
   },
   {
     question: "Can I enquire from outside Melbourne?",
     answer:
-      "Enquiries are welcome from across Australia, subject to the participating dealer’s ability to handle the transaction. Confirm any inspection, delivery, payment and purchase arrangements directly with the dealer before proceeding.",
+      "Enquiries are welcome from across Australia. Our concierge can discuss available inspection arrangements based on your location and the availability of participating watch professionals. Before proceeding, confirm the inspection arrangements with our concierge and agree any delivery, payment and purchase terms directly with the independent buyer.",
   },
 ];
 
@@ -57,8 +57,8 @@ export default function ProcessFAQ() {
           </h2>
 
           <p className="mt-5 text-sm leading-7 text-[#211A26]/75">
-            Understand how your enquiry is reviewed, when details
-            are shared and who handles a potential purchase.
+            Learn how our concierge supports you, when your
+            details are shared and who handles a potential purchase.
           </p>
         </div>
 

@@ -7,44 +7,44 @@ const sectionFont = {
 const steps = [
   {
     id: "watch-details",
-    title: "Tell Us About Your Watch",
+    title: "Submit Your Watch",
     description:
-      "Share your watch brand, model, condition and any available reference information. Add clear photographs, details about the original box, papers and service history, and your preferred contact details.",
+      "Tell us about your timepiece and provide relevant photographs and details.",
     detail:
-      "Keep identification documents and unrelated personal information out of photographs.",
+      "Include the brand, model, condition and any available box, papers or service history. Keep identification documents and unrelated personal information out of photographs.",
     image: "/images/process/step-1.jpg",
     alt: "Luxury wristwatch",
     imagePosition: "center 60%",
   },
   {
-    id: "review-referral",
-    title: "Review and Referral",
+    id: "personal-consultation",
+    title: "Personal Consultation",
     description:
-      "We review your enquiry for suitability. With your consent, suitable enquiries are referred to our participating dealer, who independently decides whether to assess your watch further.",
+      "Our concierge reviews your enquiry and discusses your requirements.",
     detail:
-      "Not every watch or enquiry will qualify for referral.",
+      "We discuss your watch, its history and your selling expectations. Your enquiry details are shared with participating watch professionals only with your consent.",
     image: "/images/process/step-2.jpg",
     alt: "Documents and fountain pen",
     imagePosition: "center 65%",
   },
   {
-    id: "potential-offer",
-    title: "Explore a Potential Offer",
+    id: "inspection-arrangements",
+    title: "Inspection Arrangements",
     description:
-      "The participating dealer may contact you for further information or arrange an inspection before deciding whether to make an offer. Watch assessments and offers are handled by the dealer.",
+      "We coordinate a suitable inspection appointment, either at participating premises or at an agreed location where available.",
     detail:
-      "Submitting an enquiry does not guarantee a valuation, offer or purchase.",
+      "Inspection arrangements depend on availability and suitability. Submitting an enquiry does not guarantee a valuation, offer or purchase.",
     image: "/images/process/step-3.jpg",
     alt: "Luxury watch in a presentation box",
     imagePosition: "center 65%",
   },
   {
-    id: "your-decision",
-    title: "The Decision Is Yours",
+    id: "your-selling-opportunity",
+    title: "Your Selling Opportunity",
     description:
-      "If the dealer makes an offer, you decide whether to accept it. Any negotiations, inspection, delivery, payment and purchase arrangements are agreed directly between you and the dealer.",
+      "The independent purchasing professional discusses the purchase offer and transaction directly with you.",
     detail:
-      "You are under no obligation to accept an offer. We Buy Watches does not purchase or take possession of your watch.",
+      "You are under no obligation to accept an offer. Payment and purchase arrangements are agreed directly with the buyer. We Buy Watches does not purchase or take possession of your watch.",
     image: "/images/process/step-4.jpg",
     alt: "Professional handshake",
     imagePosition: "center 65%",
@@ -62,7 +62,7 @@ export default function ProcessSteps() {
         {/* Section heading */}
         <div className="mx-auto max-w-2xl text-center">
           <p className="m-0 text-[10px] font-semibold uppercase leading-5 tracking-[0.28em] text-[#795C27] sm:text-xs">
-            From Enquiry to a Potential Offer
+            Your Private Concierge Experience
           </p>
 
           <h2
@@ -79,9 +79,9 @@ export default function ProcessSteps() {
           </h2>
 
           <p className="mb-0 mt-5 text-sm leading-7 text-[#211A26]/75">
-            Share your watch details, explore a potential offer from
-            our participating dealer and decide whether it is right
-            for you.
+            Share your watch details and let our concierge guide you
+            through a private consultation, inspection arrangements
+            and your selling opportunity.
           </p>
 
           <div
@@ -90,7 +90,7 @@ export default function ProcessSteps() {
           />
         </div>
 
-        {/* Process cards — no visible numbers */}
+        {/* Process cards */}
         <ol
           role="list"
           className="
@@ -121,7 +121,7 @@ export default function ProcessSteps() {
                   src={step.image}
                   alt={step.alt}
                   fill
-                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 320px"
+                  sizes="(min-width: 1328px) 305px, (min-width: 1024px) calc((100vw - 108px) / 4), (min-width: 640px) calc((100vw - 68px) / 2), calc(100vw - 40px)"
                   className="object-cover"
                   style={{
                     objectPosition: step.imagePosition,
@@ -151,7 +151,7 @@ export default function ProcessSteps() {
                   {step.description}
                 </p>
 
-                {/* Bottom detail */}
+                {/* Supporting detail */}
                 <div className="mt-auto pt-6">
                   <p className="m-0 border-t border-[#30104B]/10 pt-4 text-xs leading-6 text-[#795C27]">
                     {step.detail}
