@@ -9,7 +9,7 @@ import SellerDecision from "@/components/how-it-works/SellerDecision";
 export const metadata: Metadata = {
   title: "How Selling Your Luxury Watch Works",
   description:
-    "Explore our luxury watch referral process for Australia sellers. Share your watch details, have your enquiry reviewed and consider a potential dealer offer.",
+    "Discover our private watch concierge process in Australia, from submitting your watch details to personal consultation, inspection arrangements and selling opportunities.",
 };
 
 export default function HowItWorksPage() {
