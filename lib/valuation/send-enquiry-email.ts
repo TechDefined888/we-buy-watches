@@ -88,7 +88,7 @@ export async function sendEnquiryEmail({
 
     return true;
   } catch {
-    // Email errors must not turn a saved enquiry into a failed submission.
+    // Email errors must not turn a saved enquiry into a failed submission.A
     console.error("Enquiry notification request failed.", {
       enquiryId,
     });
