@@ -11,7 +11,7 @@ export default defineConfig({
     entrypoint: "vinext/server/fetch-handler",
     compatibilityDate: "2026-11-16",
 
-    // Match the current Dashboard URL settings.
+    // Cloudflare staging URL configuration
     workersDev: true,
     previewUrls: false,
 
@@ -26,23 +26,40 @@ export default defineConfig({
     },
 
     env: {
+      // Cloudflare static assets
       ASSETS: bindings.assets(),
-      VINEXT_KV_CACHE: bindings.kv(),
 
-      // Non-secret runtime variables
+      // Reuse the existing Cloudflare KV namespace
+      VINEXT_KV_CACHE: bindings.kv({
+        id: "6fa3e2a832e641b7ae6e9c1c464634ef",
+      }),
+
+      // Supabase project URL (non-secret)
       SUPABASE_URL: bindings.text(
         "https://swtxrlngwlgmsmyegjoa.supabase.co"
       ),
 
+      // Verified Resend sender email (non-secret)
       ENQUIRY_EMAIL_FROM: bindings.text(
         "notifications@webuywatches.com.au"
       ),
 
+      // Public Cloudflare Turnstile site key
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: bindings.text(
         "0x4AAAAAAF4ksszvqcwoAB7m"
       ),
 
-      // Secrets: values remain in Cloudflare.
+      // Allowed Turnstile verification hostnames
+      TURNSTILE_ALLOWED_HOSTNAMES: bindings.text(
+        "localhost,we-buy-watches.connect-738.workers.dev,webuywatches.com.au,www.webuywatches.com.au"
+      ),
+
+      // Enable enquiry APIs on Cloudflare staging
+      CLOUDFLARE_ENQUIRY_ENABLED: bindings.text(
+        "true"
+      ),
+
+      // Secrets: actual values remain in Cloudflare
       SUPABASE_SECRET_KEY: bindings.secret(),
       RESEND_API_KEY: bindings.secret(),
       ENQUIRY_EMAIL_TO: bindings.secret(),
