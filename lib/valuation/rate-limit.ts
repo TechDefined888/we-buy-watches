@@ -1,3 +1,4 @@
+
 import "server-only";
 
 import { createHmac } from "node:crypto";
@@ -10,6 +11,9 @@ import { createSupabaseAdmin } from "@/lib/supabase/admin";
 
 type RateLimitScope = "uploads" | "submit";
 
+const CLOUDFLARE_STAGING_HOST =
+  "we-buy-watches.connect-738.workers.dev";
+
 const resultSchema = z
   .array(
     z.object({
@@ -19,7 +23,16 @@ const resultSchema = z
   )
   .length(1);
 
+function isCloudflareStaging(request: Request): boolean {
+  return (
+    process.env.CLOUDFLARE_ENQUIRY_ENABLED === "true" &&
+    new URL(request.url).hostname.toLowerCase() ===
+      CLOUDFLARE_STAGING_HOST
+  );
+}
+
 function getClientIdentifier(request: Request): string {
+  // Vercel: preserve existing trusted IP handling.
   if (process.env.VERCEL === "1") {
     const ip = request.headers
       .get("x-vercel-forwarded-for")
@@ -27,35 +40,66 @@ function getClientIdentifier(request: Request): string {
       .toLowerCase();
 
     if (!ip || !isIP(ip)) {
-      throw new Error("Trusted client address is unavailable.");
+      throw new Error(
+        "Trusted client address is unavailable."
+      );
     }
 
     return ip;
   }
 
+  // Local development.
   if (process.env.NODE_ENV === "development") {
-    // Ignore supplied IP headers on the local server.
     return "local-development";
   }
 
-  if (process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true") {
+  // Netlify: preserve existing trusted IP handling.
+  if (
+    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true"
+  ) {
     const ip = request.headers
       .get("x-nf-client-connection-ip")
       ?.trim()
       .toLowerCase();
 
     if (!ip || !isIP(ip)) {
-      throw new Error("Trusted client address is unavailable.");
+      throw new Error(
+        "Trusted client address is unavailable."
+      );
     }
 
     return ip;
   }
 
-  throw new Error("The hosting platform is not configured.");
+  // Cloudflare Workers staging.
+  // Only trust this header in the Cloudflare
+  // deployment, not from arbitrary external hosts.
+  if (isCloudflareStaging(request)) {
+    const ip = request.headers
+      .get("cf-connecting-ip")
+      ?.trim()
+      .toLowerCase();
+
+    if (!ip || !isIP(ip)) {
+      throw new Error(
+        "Cloudflare client address is unavailable."
+      );
+    }
+
+    return ip;
+  }
+
+  throw new Error(
+    "The hosting platform is not configured."
+  );
 }
 
-function createRateLimitHash(identifier: string): string {
-  const secret = process.env.SUPABASE_SECRET_KEY?.trim();
+function createRateLimitHash(
+  identifier: string,
+  request: Request,
+): string {
+  const secret =
+    process.env.SUPABASE_SECRET_KEY?.trim();
 
   if (!secret) {
     throw new Error("Missing server configuration.");
@@ -70,9 +114,17 @@ function createRateLimitHash(identifier: string): string {
     process.env.NODE_ENV !== "development" &&
     process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
 
-  const environment = netlifyTestEnabled
-    ? "netlify-test"
-    : (process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown");
+  // Keep staging rate limits separate from
+  // Netlify, Vercel, and local development.
+  const environment = isCloudflareStaging(request)
+    ? "cloudflare-staging"
+    : netlifyTestEnabled
+      ? "netlify-test"
+      : (
+          process.env.VERCEL_ENV ??
+          process.env.NODE_ENV ??
+          "unknown"
+        );
 
   return createHmac("sha256", signingKey)
     .update(`${environment}\0${identifier}`)
@@ -85,7 +137,12 @@ export async function enforceEnquiryRateLimit(
 ): Promise<NextResponse | null> {
   try {
     const identifier = getClientIdentifier(request);
-    const keyHash = createRateLimitHash(identifier);
+
+    const keyHash = createRateLimitHash(
+      identifier,
+      request,
+    );
+
     const supabase = createSupabaseAdmin();
 
     const { data, error } = await supabase.rpc(
@@ -120,16 +177,21 @@ export async function enforceEnquiryRateLimit(
       return null;
     }
 
-    const retryAfter = Math.max(1, result.retry_after_seconds);
+    const retryAfter = Math.max(
+      1,
+      result.retry_after_seconds,
+    );
+
     const minutes = Math.ceil(retryAfter / 60);
 
     return NextResponse.json(
       {
         ok: false,
         code: "RATE_LIMITED",
-        message: `Too many requests. Please try again in about ${minutes} ${
-          minutes === 1 ? "minute" : "minutes"
-        }.`,
+        message:
+          `Too many requests. Please try again in about ${minutes} ${
+            minutes === 1 ? "minute" : "minutes"
+          }.`,
         retryAfterSeconds: retryAfter,
       },
       {
@@ -141,7 +203,9 @@ export async function enforceEnquiryRateLimit(
       },
     );
   } catch {
-    console.error("Enquiry rate limiting is unavailable.");
+    console.error(
+      "Enquiry rate limiting is unavailable."
+    );
 
     return NextResponse.json(
       {
