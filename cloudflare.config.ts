@@ -58,6 +58,11 @@ export default defineConfig({
       CLOUDFLARE_ENQUIRY_ENABLED: bindings.text(
         "true"
       ),
+      // Cleanup remains in safe preview mode
+      ENQUIRY_CLEANUP_ENABLED: bindings.text("false"),
+
+      // Secret value is managed in Cloudflare Dashboard
+      CRON_SECRET: bindings.secret(),
 
       // Secrets: actual values remain in Cloudflare
       SUPABASE_SECRET_KEY: bindings.secret(),
