@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { fileTypeFromBuffer } from "file-type";
 import { z } from "zod";
@@ -12,6 +13,7 @@ import {
   REFERRAL_CONSENT_TEXT,
 } from "@/lib/valuation/config";
 
+import { isEnquiryAccessEnabled } from "@/lib/valuation/enquiry-access";
 import { enforceEnquiryRateLimit } from "@/lib/valuation/rate-limit";
 import { enquirySubmissionSchema } from "@/lib/valuation/schema";
 import { sendEnquiryEmail } from "@/lib/valuation/send-enquiry-email";
@@ -106,22 +108,13 @@ function photoTypesMatch(
 }
 
 export async function POST(request: NextRequest) {
-  // Preserve the existing deployment access controls.
-  const vercelPreviewEnabled =
-    process.env.VERCEL_ENV === "preview" &&
-    process.env.ENQUIRY_PREVIEW_ENABLED === "true";
-
-  const netlifyTestEnabled =
-    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
-
-  if (
-    process.env.NODE_ENV !== "development" &&
-    !vercelPreviewEnabled &&
-    !netlifyTestEnabled
-  ) {
+  // Preserve existing deployment access controls
+  // and allow explicitly enabled Cloudflare staging.
+  if (!isEnquiryAccessEnabled(request)) {
     return new NextResponse(null, { status: 404 });
   }
 
+  // Accept requests from this site's origin only.
   if (
     request.headers.get("origin") !== request.nextUrl.origin
   ) {
@@ -403,7 +396,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // The enquiry is saved. Notification failures must not undo success.
+    // The enquiry is saved.
+    // Notification failures must not undo success.
     try {
       await sendEnquiryEmail({
         enquiryId,

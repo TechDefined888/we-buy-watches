@@ -1,9 +1,11 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { createSupabaseAdmin } from "@/lib/supabase/admin";
 
 import { PHOTO_BUCKET } from "@/lib/valuation/config";
+import { isEnquiryAccessEnabled } from "@/lib/valuation/enquiry-access";
 import { enforceEnquiryRateLimit } from "@/lib/valuation/rate-limit";
 import { enquirySubmissionSchema } from "@/lib/valuation/schema";
 import { verifyTurnstile } from "@/lib/valuation/turnstile";
@@ -76,19 +78,9 @@ async function readBoundedBody(
 }
 
 export async function POST(request: NextRequest) {
-
-  const vercelPreviewEnabled =
-    process.env.VERCEL_ENV === "preview" &&
-    process.env.ENQUIRY_PREVIEW_ENABLED === "true";
-
-  const netlifyTestEnabled =
-    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
-
-  if (
-    process.env.NODE_ENV !== "development" &&
-    !vercelPreviewEnabled &&
-    !netlifyTestEnabled
-  ) {
+  // Allow existing development/preview access and
+  // explicitly configured Cloudflare staging access.
+  if (!isEnquiryAccessEnabled(request)) {
     return new NextResponse(null, { status: 404 });
   }
 
