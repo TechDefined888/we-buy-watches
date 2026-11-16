@@ -12,7 +12,7 @@ export default defineConfig({
     compatibilityDate: "2026-11-16",
 
     // Match the current Dashboard URL settings.
-    workersDev: false,
+    workersDev: true,
     previewUrls: false,
 
     assets: {
