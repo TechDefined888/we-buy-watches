@@ -11,8 +11,17 @@ import { createSupabaseAdmin } from "@/lib/supabase/admin";
 
 type RateLimitScope = "uploads" | "submit";
 
+type CloudflareEnvironment =
+  | "cloudflare-staging"
+  | "cloudflare-production";
+
 const CLOUDFLARE_STAGING_HOST =
   "we-buy-watches.connect-738.workers.dev";
+
+const CLOUDFLARE_PRODUCTION_HOSTS = new Set([
+  "webuywatches.com.au",
+  "www.webuywatches.com.au",
+]);
 
 const resultSchema = z
   .array(
@@ -23,16 +32,37 @@ const resultSchema = z
   )
   .length(1);
 
-function isCloudflareStaging(request: Request): boolean {
-  return (
-    process.env.CLOUDFLARE_ENQUIRY_ENABLED === "true" &&
-    new URL(request.url).hostname.toLowerCase() ===
-      CLOUDFLARE_STAGING_HOST
-  );
+function getCloudflareEnvironment(
+  request: Request,
+): CloudflareEnvironment | null {
+  const hostname = new URL(
+    request.url,
+  ).hostname.toLowerCase();
+
+  if (
+    process.env.CLOUDFLARE_ENQUIRY_ENABLED ===
+      "true" &&
+    hostname === CLOUDFLARE_STAGING_HOST
+  ) {
+    return "cloudflare-staging";
+  }
+
+  if (
+    process.env
+      .CLOUDFLARE_PRODUCTION_ENQUIRY_ENABLED ===
+      "true" &&
+    CLOUDFLARE_PRODUCTION_HOSTS.has(hostname)
+  ) {
+    return "cloudflare-production";
+  }
+
+  return null;
 }
 
-function getClientIdentifier(request: Request): string {
-  // Vercel: preserve existing trusted IP handling.
+function getClientIdentifier(
+  request: Request,
+): string {
+  // Preserve Vercel IP handling.
   if (process.env.VERCEL === "1") {
     const ip = request.headers
       .get("x-vercel-forwarded-for")
@@ -48,14 +78,15 @@ function getClientIdentifier(request: Request): string {
     return ip;
   }
 
-  // Local development.
+  // Preserve local development.
   if (process.env.NODE_ENV === "development") {
     return "local-development";
   }
 
-  // Netlify: preserve existing trusted IP handling.
+  // Preserve Netlify IP handling.
   if (
-    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true"
+    process.env.NETLIFY_ENQUIRY_TEST_ENABLED ===
+    "true"
   ) {
     const ip = request.headers
       .get("x-nf-client-connection-ip")
@@ -71,10 +102,12 @@ function getClientIdentifier(request: Request): string {
     return ip;
   }
 
-  // Cloudflare Workers staging.
-  // Only trust this header in the Cloudflare
-  // deployment, not from arbitrary external hosts.
-  if (isCloudflareStaging(request)) {
+  // Only use Cloudflare IP handling for
+  // explicitly enabled Cloudflare hostnames.
+  const cloudflareEnvironment =
+    getCloudflareEnvironment(request);
+
+  if (cloudflareEnvironment) {
     const ip = request.headers
       .get("cf-connecting-ip")
       ?.trim()
@@ -112,12 +145,15 @@ function createRateLimitHash(
   const netlifyTestEnabled =
     process.env.VERCEL !== "1" &&
     process.env.NODE_ENV !== "development" &&
-    process.env.NETLIFY_ENQUIRY_TEST_ENABLED === "true";
+    process.env.NETLIFY_ENQUIRY_TEST_ENABLED ===
+      "true";
 
-  // Keep staging rate limits separate from
-  // Netlify, Vercel, and local development.
-  const environment = isCloudflareStaging(request)
-    ? "cloudflare-staging"
+  const cloudflareEnvironment =
+    getCloudflareEnvironment(request);
+
+  // Separate staging and production rate limits.
+  const environment = cloudflareEnvironment
+    ? cloudflareEnvironment
     : netlifyTestEnabled
       ? "netlify-test"
       : (
@@ -136,7 +172,8 @@ export async function enforceEnquiryRateLimit(
   scope: RateLimitScope,
 ): Promise<NextResponse | null> {
   try {
-    const identifier = getClientIdentifier(request);
+    const identifier =
+      getClientIdentifier(request);
 
     const keyHash = createRateLimitHash(
       identifier,
@@ -154,23 +191,31 @@ export async function enforceEnquiryRateLimit(
     );
 
     if (error) {
-      console.error("Enquiry rate-limit check failed.", {
-        code: error.code,
-      });
+      console.error(
+        "Enquiry rate-limit check failed.",
+        { code: error.code },
+      );
 
-      throw new Error("Rate-limit check unavailable.");
+      throw new Error(
+        "Rate-limit check unavailable."
+      );
     }
 
-    const parsed = resultSchema.safeParse(data);
+    const parsed =
+      resultSchema.safeParse(data);
 
     if (!parsed.success) {
-      throw new Error("Invalid rate-limit response.");
+      throw new Error(
+        "Invalid rate-limit response."
+      );
     }
 
     const result = parsed.data[0];
 
     if (!result) {
-      throw new Error("Missing rate-limit response.");
+      throw new Error(
+        "Missing rate-limit response."
+      );
     }
 
     if (result.allowed) {
@@ -182,7 +227,8 @@ export async function enforceEnquiryRateLimit(
       result.retry_after_seconds,
     );
 
-    const minutes = Math.ceil(retryAfter / 60);
+    const minutes =
+      Math.ceil(retryAfter / 60);
 
     return NextResponse.json(
       {
@@ -190,7 +236,9 @@ export async function enforceEnquiryRateLimit(
         code: "RATE_LIMITED",
         message:
           `Too many requests. Please try again in about ${minutes} ${
-            minutes === 1 ? "minute" : "minutes"
+            minutes === 1
+              ? "minute"
+              : "minutes"
           }.`,
         retryAfterSeconds: retryAfter,
       },
