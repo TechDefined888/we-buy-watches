@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   title: "Sell Your Omega in Australia",
   description:
     "Considering selling a premium Omega watch in Australia? Submit details and photos for review and potential dealer referral. Selected models considered.",
-};
+
+  // app/sell-omega/page.tsx
+  alternates: {
+    canonical: "/sell-omega",
+  },
+
+  };
 
 export default function SellOmegaPage() {
   return (

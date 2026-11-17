@@ -1,4 +1,3 @@
-
 import handler from "vinext/server/fetch-handler";
 
 type WorkerEnv = {
@@ -6,25 +5,60 @@ type WorkerEnv = {
   ENQUIRY_CLEANUP_ENABLED: string;
 };
 
+const STAGING_HOSTNAME =
+  "we-buy-watches.connect-738.workers.dev";
+
+// Existing cleanup endpoint — always preview-only.
 const CLEANUP_URL =
-  "https://we-buy-watches.connect-738.workers.dev/api/cron/cleanup-enquiry-uploads?dryRun=true";
+  `https://${STAGING_HOSTNAME}/api/cron/cleanup-enquiry-uploads?dryRun=true`;
 
 export default {
-  fetch(
+  // Handle normal website and API requests.
+  async fetch(
     request: Request,
     env: WorkerEnv,
     ctx: ExecutionContext,
   ): Promise<Response> {
-    return handler.fetch(request, env, ctx);
+    // Preserve existing Vinext application handling.
+    const response = await handler.fetch(
+      request,
+      env,
+      ctx,
+    );
+
+    const hostname = new URL(
+      request.url,
+    ).hostname.toLowerCase();
+
+    // Prevent indexing only on the staging hostname.
+    if (hostname === STAGING_HOSTNAME) {
+      const stagingResponse = new Response(
+        response.body,
+        response,
+      );
+
+      stagingResponse.headers.set(
+        "X-Robots-Tag",
+        "noindex, nofollow",
+      );
+
+      return stagingResponse;
+    }
+
+    // Do not modify production response headers.
+    return response;
   },
 
+  // Existing daily scheduled cleanup.
   async scheduled(
     controller: ScheduledController,
     env: WorkerEnv,
     ctx: ExecutionContext,
   ): Promise<void> {
     if (controller.cron !== "0 2 * * *") {
-      throw new Error("Unexpected cleanup schedule.");
+      throw new Error(
+        "Unexpected cleanup schedule.",
+      );
     }
 
     if (
@@ -32,7 +66,7 @@ export default {
       env.CRON_SECRET.length < 32
     ) {
       throw new Error(
-        "Cleanup secret is missing or invalid."
+        "Cleanup secret is missing or invalid.",
       );
     }
 
@@ -44,7 +78,7 @@ export default {
     });
 
     // Reuse the existing Next.js cleanup API route.
-    // Always dry-run: no images will be deleted.
+    // dryRun=true prevents photo deletion.
     const response = await handler.fetch(
       request,
       env,
@@ -54,11 +88,13 @@ export default {
     if (!response.ok) {
       console.error(
         "Scheduled cleanup preview failed.",
-        { status: response.status }
+        {
+          status: response.status,
+        },
       );
 
       throw new Error(
-        "Scheduled cleanup preview failed."
+        "Scheduled cleanup preview failed.",
       );
     }
 
@@ -73,12 +109,12 @@ export default {
       result.mode !== "preview"
     ) {
       throw new Error(
-        "Unexpected cleanup preview response."
+        "Unexpected cleanup preview response.",
       );
     }
 
     console.log(
-      "Scheduled cleanup preview completed."
+      "Scheduled cleanup preview completed.",
     );
   },
 };

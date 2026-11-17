@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   title: "Sell Your Rolex in Australia",
   description:
     "Considering selling your Rolex in Australia? Share watch details and photos for review and potential dealer referral. No obligation to accept an offer.",
+
+  alternates: {
+    canonical: "/sell-rolex",
+  },
 };
 
 export default function SellRolexPage() {

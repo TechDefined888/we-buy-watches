@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { jaegerLecoultreContent } from "@/data/jaeger-lecoultre";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-jaeger-lecoultre",
+  },
   title: "Sell Your Jaeger-LeCoultre in Australia",
   description:
     "Considering selling your Jaeger-LeCoultre in Australia? Share watch details, condition and photos for review and potential referral to a participating dealer.",

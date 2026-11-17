@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   title: "How Selling Your Luxury Watch Works",
   description:
     "Discover our private watch concierge process in Australia, from submitting your watch details to personal consultation, inspection arrangements and selling opportunities.",
+
+    // app/how-it-works/page.tsx
+    alternates: {
+      canonical: "/how-it-works",
+    },
 };
 
 export default function HowItWorksPage() {

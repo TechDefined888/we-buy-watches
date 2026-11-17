@@ -31,13 +31,18 @@ const navbarFont = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    "https://webuywatches.com.au"
+  ),
+
   title: {
     default: "We Buy Watches",
     template: "%s | We Buy Watches",
   },
+
   description:
     "A premium Australian luxury-watch referral platform for owners looking to sell desirable high-value watches.",
-};
+  };
 
 export default function RootLayout({
   children,

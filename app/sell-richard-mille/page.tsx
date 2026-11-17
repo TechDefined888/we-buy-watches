@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { richardMilleContent } from "@/data/richard-mille";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-richard-mille",
+  },
   title: "Sell Your Richard Mille in Australia",
   description:
     "Explore selling your Richard Mille in Australia. Share the reference, condition, photos and document details for review and potential dealer referral.",

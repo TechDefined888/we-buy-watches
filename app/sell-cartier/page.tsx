@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { cartierContent } from "@/data/cartier";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-cartier",
+  },
   title: "Sell Your Cartier Watch in Australia",
   description:
     "Looking to sell your Cartier watch in Australia? Share its model, condition and photographs for review and potential referral to a participating dealer.",

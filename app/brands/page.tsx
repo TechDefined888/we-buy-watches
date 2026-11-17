@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   title: "Luxury Watch Brands to Sell in Australia",
   description:
     "Explore Rolex, Patek Philippe, Audemars Piguet and other luxury watch brands. Learn about selling your watch in Australia through our dealer referral platform.",
+
+    // app/brands/page.tsx
+    alternates: {
+      canonical: "/brands",
+    },
 };
 
 export default function BrandsPage() {

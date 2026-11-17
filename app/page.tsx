@@ -4,6 +4,14 @@ import FeaturedBrands from "@/components/home/FeaturedBrands";
 import HowItWorksPreview from "@/components/home/HowItWorksPreview";
 import TrustSection from "@/components/home/TrustSection";
 import ClosingCTA from "@/components/home/ClosingCTA";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (

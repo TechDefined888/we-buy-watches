@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { fpJourneContent } from "@/data/fp-journe";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-fp-journe",
+  },
   title: "Sell Your F.P. Journe in Australia",
   description:
     "Considering selling your F.P. Journe in Australia? Share watch details, photos and available records for review and potential referral to a participating dealer.",

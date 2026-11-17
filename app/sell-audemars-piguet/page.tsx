@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { audemarsPiguetContent } from "@/data/audemars-piguet";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-audemars-piguet",
+  },
   title: "Sell Your Audemars Piguet in Australia",
   description:
     "Considering selling your Audemars Piguet in Australia? Share watch details, condition and photos for review and potential referral to a participating dealer.",

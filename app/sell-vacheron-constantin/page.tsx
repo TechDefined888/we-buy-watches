@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { vacheronConstantinContent } from "@/data/vacheron-constantin";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-vacheron-constantin",
+  },
   title: "Sell Your Vacheron Constantin in Australia",
   description:
     "Considering selling your Vacheron Constantin in Australia? Share watch details, photos and service information for review and potential dealer referral.",

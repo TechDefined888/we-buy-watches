@@ -4,6 +4,9 @@ import BrandSellingPage from "@/components/brands/BrandSellingPage";
 import { breitlingContent } from "@/data/breitling";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/sell-breitling",
+  },
   title: "Sell Your Breitling in Australia",
   description:
     "Considering selling a premium Breitling watch in Australia? Share details and photos for review and potential dealer referral. Selected models considered.",

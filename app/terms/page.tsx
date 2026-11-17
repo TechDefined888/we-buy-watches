@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: "/terms",
+  },
   title: "Terms of Use",
   description:
     "Draft terms explaining the We Buy Watches enquiry and dealer referral service.",
