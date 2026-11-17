@@ -72,9 +72,9 @@ export default defineConfig({
       ),
 
       // Production enquiry access stays disabled
-      // until the custom domain is ready.
+     // Enable enquiries for the production domain.
       CLOUDFLARE_PRODUCTION_ENQUIRY_ENABLED:
-        bindings.text("false"),
+        bindings.text("true"),
 
       // Keep cleanup disabled during verification.
       ENQUIRY_CLEANUP_ENABLED: bindings.text(
